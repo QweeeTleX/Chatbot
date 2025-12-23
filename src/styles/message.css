@@ -1,0 +1,16 @@
+.message {
+	max-width: 60%;
+	padding: 10px;
+	margin-bottom: 10px;
+	border-radius: 8px;
+}
+
+.message.user {
+	background: #4f36e5;
+	color: white;
+	margin-left: auto;
+}
+
+.message.bot {
+	background: #e5e7eb;
+}

@@ -1,0 +1,21 @@
+.sidebar {
+	width: 260px;
+	background: #ffffff;
+	border-right: 1px solid #ddd;
+	padding: 15px;
+}
+
+.new-chat {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+}
+
+.chat-item {
+	padding: 8px;
+	cursor: pointer;
+}
+
+.chat-item.active {
+	background: #eaeaea;
+}

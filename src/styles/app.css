@@ -1,0 +1,7 @@
+.app {
+	display: flex;
+	height: 100vh;
+	background: #f5f6fa;
+	font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
