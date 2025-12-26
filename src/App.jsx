@@ -1,23 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Chat from "./components/Chat";
 import "./styles/app.css";
 
 function App() {
-  const [chats, setChats] = useState([
-    {
-      id: 1,
-      name: "Чат 1",
-      messages: [{ text: "Привет! Чем могу помочь?", sender: "bot"}],
-    },
-    {
-      id: 2,
-      name: "Чат 2",
-      messages: [{ text: "Это второй чат", sender: "bot" }],
-    },
-  ]);
+  const [chats, setChats] = useState(() => {
+    const saved = localStorage.getItem("chats");
 
-  const [activeChatId, setActiveChatId] = useState(1);
+    return saved
+    ? JSON.parse(saved)
+    : [
+        {
+          id: 1,
+          name: "Чат 1",
+          messages: [
+            { text: "Привет, чем могу помочь?", sender: "bot"},
+
+          ],
+        },
+    ];
+  });
+
+
+  const [activeChatId, setActiveChatId] = useState(() => {
+    return Number(localStorage.getItem("activeChatId")) || 1;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("activeChatId", activeChatId);
+  }, [activeChatId]);
 
   const activeChat = chats.find((c) => c.id === activeChatId);
 
@@ -30,13 +41,17 @@ function App() {
               messages: [
                 ...chat.messages,
                 { text, sender: "user" },
-                {text: "Заглушка ответа хули", sender: "bot" },
+                { text: "Заглушка ответа хули", sender: "bot" },
               ],
           }
         : chat
       )
     );
   };
+
+  useEffect(() => {
+    localStorage.setItem("chats", JSON.stringify(chats));
+  }, [chats]);
 
   return (
     <div className="app">
@@ -45,11 +60,14 @@ function App() {
         activeChatId={activeChatId}
         onSelectChat={setActiveChatId}
         />
+
+        {activeChat && (
         <Chat
           key={activeChatId}
           messages={activeChat.messages}
           onSend={sendMessage}
           />
+        )}
     </div>
   );
 }
