@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Message from "./Message";
 import Input from "./Input";
 import "../styles/chat.css";
@@ -7,6 +7,15 @@ export default function Chat() {
   const [messages, setMessages] = useState([
     { text: "Привет! Чем могу помочь?", sender: "bot" },
   ]);
+
+
+  const somethingRef = useRef(null);
+
+  useEffect(() => {
+    if (somethingRef.current) {
+      somethingRef.current.scrollIntoView({behavior: "smooth"});
+    }
+  },  [messages]);
 
   const sendMessage = (text) => {
     setMessages((prev) => [
@@ -22,6 +31,7 @@ export default function Chat() {
         {messages.map((msg, i) => (
           <Message key={i} {...msg} />
         ))}
+        <div ref={somethingRef}></div>
       </div>
       <Input onSend={sendMessage} />
     </div>

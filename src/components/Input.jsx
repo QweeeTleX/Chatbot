@@ -16,6 +16,13 @@ export default function Input({ onSend }) {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Введите сообщение..."
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSend();
+          }
+        }
+         
+        }
       />
       <button onClick={handleSend}>Отправить</button>
     </div>
