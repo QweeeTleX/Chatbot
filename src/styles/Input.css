@@ -1,8 +1,10 @@
-.input-box {
-	display: flex;
-	padding: 10px;
-	border-top: 1px solid #ddd;
+.input-box input {
+  background: #202328;
+  border: none;
+  color: white;
+  border-radius: 8px;
 }
+
 
 .input-box input {
 	flex: 1;
