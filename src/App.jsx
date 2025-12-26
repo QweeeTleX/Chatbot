@@ -63,7 +63,6 @@ function App() {
 
         {activeChat && (
         <Chat
-          key={activeChatId}
           messages={activeChat.messages}
           onSend={sendMessage}
           />

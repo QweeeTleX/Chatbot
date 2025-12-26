@@ -1,14 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import {  useRef, useEffect } from "react";
 import Message from "./Message";
 import Input from "./Input";
 import "../styles/chat.css";
 
-export default function Chat() {
-  const [messages, setMessages] = useState([
-    { text: "Привет! Чем могу помочь?", sender: "bot" },
-  ]);
-
-
+export default function Chat({ messages, onSend }) {
   const somethingRef = useRef(null);
 
   useEffect(() => {
@@ -17,13 +12,7 @@ export default function Chat() {
     }
   },  [messages]);
 
-  const sendMessage = (text) => {
-    setMessages((prev) => [
-      ...prev,
-      { text, sender: "user" },
-      { text: "Это заглушка ответа 🤖", sender: "bot" },
-    ]);
-  };
+
 
   return (
     <div className="chat">
@@ -33,7 +22,7 @@ export default function Chat() {
         ))}
         <div ref={somethingRef}></div>
       </div>
-      <Input onSend={sendMessage} />
+      <Input onSend={onSend} />
     </div>
   );
 }
