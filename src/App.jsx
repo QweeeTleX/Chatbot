@@ -99,7 +99,8 @@ function App() {
         onSelectChat={setActiveChatId}
         onCreateChat={createNewChat}
         />
-
+        
+        <div className="chat-area">
         {activeChat && (
         <Chat
           chatId={activeChatId}
@@ -107,6 +108,7 @@ function App() {
           onSend={sendMessage}
           />
         )}
+    </div>
     </div>
   );
 }

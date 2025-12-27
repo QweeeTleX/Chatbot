@@ -3,6 +3,7 @@
 	background: #181a1f;
 	border-right: 1px solid #2a2d33;
 	padding: 15px;
+	flex-shrink: 0;
 }
 
 .new-chat {
@@ -14,8 +15,19 @@
 .chat-item {
 	padding: 8px;
 	cursor: pointer;
+	transition: background-color 0.15s ease;
+	background-color: transparent;
+}
+
+.chat-item:hover {
+	background-color: #292c32;
 }
 
 .chat-item.active {
-	background: #eaeaea;
+	background-color: #eaeaea;
+}
+
+.sidebar ul {
+	list-style: none;
+	padding: 0;
 }

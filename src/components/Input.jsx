@@ -24,7 +24,7 @@ export default function Input({ onSend }) {
          
         }
       />
-      <button onClick={handleSend}>Отправить</button>
+      <button onClick={handleSend} className="send-btn">➤</button>
     </div>
   );
 }
