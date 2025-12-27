@@ -1,11 +1,11 @@
 import "../styles/sidebar.css";
 
 
-export default function Sidebar({ chats, activeChatId, onSelectChat }) {
+export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateChat }) {
 	return (
 		<div className="sidebar">
 			<h2>Чаты</h2>
-			<button className="new-chat">+ Новый чат</button>
+			<button className="new-chat" onClick={onCreateChat}>+ Новый чат</button>
 
 			<ul>
 				{chats.map((chat) => (
