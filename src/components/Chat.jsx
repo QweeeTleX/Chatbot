@@ -48,14 +48,14 @@ export default function Chat({ chatId, messages, onSend }) {
       el.scrollTop = el.scrollHeight;
     } 
 
-  }, [messages]);
+  }, [messages, chatId]);
 
 
   return (
     <div className="chat">
       <div onScroll={handleScroll} ref={somethingRef} className="messages">
-        {messages.map((msg, i) => (
-          <Message key={i} {...msg} />
+        {messages.map((msg) => (
+          <Message key={msg.id} {...msg} />
         ))}
         
       </div>

@@ -14,7 +14,12 @@ function App() {
           id: 1,
           name: "Чат 1",
           messages: [
-            { text: "Привет, чем могу помочь?", sender: "bot"},
+            {
+              id: crypto.randomUUID(),
+              text: "Привет, чем могу помочь?",
+              sender: "bot",
+              timestamp: Date.now(),
+            },
 
           ],
         },
@@ -62,8 +67,17 @@ function App() {
               ...chat,
               messages: [
                 ...chat.messages,
-                { text, sender: "user" },
-                { text: "Заглушка ответа хули", sender: "bot" },
+                { 
+                  id: crypto.randomUUID(),
+                  text,
+                  sender: "user",
+                  timestamp: Date.now(),
+                },
+                { id: crypto.randomUUID(),
+                  text: "Заглушка ответа хули",
+                  sender: "bot",
+                timestamp: Date.now(),
+               },
               ],
           }
         : chat
