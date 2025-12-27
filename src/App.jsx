@@ -52,10 +52,12 @@ function App() {
         messages: [{ text: "Привет, чем могу помочь?", sender: "bot"}],
       };
       
+      setActiveChatId(newId);
+
+
       return [...prevChats, newChat];
     });
 
-    setActiveChatId(newId);
   };
   
 
