@@ -1,7 +1,11 @@
+import { useState } from "react";
 import "../styles/sidebar.css";
 
 
 export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateChat }) {
+
+	const [editingChatId, setEditingChatId] = useState(null);
+
 	return (
 		<div className="sidebar">
 			<h2>Чаты</h2>
@@ -19,9 +23,30 @@ export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateCha
 								<span className="chat-title">{chat.name}</span>
 
 								<div className="chat-actions">
-									<span className="chat-action">✏️ Переименовать</span>
-									<span className="chat-action">📌 Закрепить</span>
-									<span className="chat-action">🗑️ Удалить</span>
+									<span className="chat-action"
+									onClick={(e) => {
+										e.stopPropagation();
+									}}
+									>
+										✏️ 
+									</span>
+
+									<span className="chat-action"
+									onClick={(e) => {
+										e.stopPropagation();
+									}}
+									>
+										📌
+										</span>
+
+
+									<span className="chat-action"
+									onClick={(e) => {
+										e.stopPropagation();
+									}}
+									>
+										🗑️
+										</span>
 								</div>
 							</li>
 				))}
