@@ -87,6 +87,17 @@ function App() {
     );
   };
 
+  const renameChat = (chatId, newName) => {
+    setChats((prevChats) => 
+      prevChats.map((chat) =>
+        chat.id === chatId
+          ? {...chat, name: newName }
+          : chat
+        )
+      );
+  };
+
+
   useEffect(() => {
     localStorage.setItem("chats", JSON.stringify(chats));
   }, [chats]);
@@ -98,6 +109,7 @@ function App() {
         activeChatId={activeChatId}
         onSelectChat={setActiveChatId}
         onCreateChat={createNewChat}
+        onRenameChat={renameChat}
         />
         
         <div className="chat-area">

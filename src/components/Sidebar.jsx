@@ -2,9 +2,19 @@ import { useState } from "react";
 import "../styles/sidebar.css";
 
 
-export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateChat }) {
+export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateChat, onRenameChat }) {
 
 	const [editingChatId, setEditingChatId] = useState(null);
+
+	const [editingTitle, setEditingTitle] = useState("");
+
+	const saveTitle = (chatId) => {
+		const trimmed = editingTitle.trim();
+		if (!trimmed) return;
+
+		onRenameChat(chatId, trimmed);
+		setEditingChatId(null);
+	};
 
 	return (
 		<div className="sidebar">
@@ -20,12 +30,32 @@ export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateCha
 							}`}
 							onClick={() => onSelectChat(chat.id)}
 					>
-								<span className="chat-title">{chat.name}</span>
+								{editingChatId === chat.id ? (
+									<input
+										className="chat-title-input"
+										value={editingTitle}
+										onChange={(e) => setEditingTitle(e.target.value)}
+										onClick={(e) => e.stopPropagation()}
+										onKeyDown={(e) => {
+											if (e.key === "Enter") {
+												saveTitle(chat.id);
+											}
+										}}
+										onBlur={() => {
+											saveTitle(chat.id);
+										}}
+										/>
+								) : (
+									<span className="chat-title">{chat.name}</span>
+										
+								)}
 
 								<div className="chat-actions">
 									<span className="chat-action"
 									onClick={(e) => {
 										e.stopPropagation();
+										setEditingChatId(chat.id);
+										setEditingTitle(chat.name);
 									}}
 									>
 										✏️ 
