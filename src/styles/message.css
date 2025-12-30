@@ -14,9 +14,3 @@
 	  background: #2a2d33;
   	color: #eaeaea;
 }
-
-.messages {
-	flex: 1;
-	padding: 24px;
-	overflow-y: auto;
-}

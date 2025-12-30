@@ -15,8 +15,14 @@ export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateCha
 							chat.id === activeChatId ? "active" : ""
 							}`}
 							onClick={() => onSelectChat(chat.id)}
-							>
-								{chat.name}
+					>
+								<span className="chat-title">{chat.name}</span>
+
+								<div className="chat-actions">
+									<span className="chat-action">✏️ Переименовать</span>
+									<span className="chat-action">📌 Закрепить</span>
+									<span className="chat-action">🗑️ Удалить</span>
+								</div>
 							</li>
 				))}
 			</ul>
