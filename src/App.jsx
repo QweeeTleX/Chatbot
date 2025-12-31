@@ -13,6 +13,7 @@ function App() {
         {
           id: 1,
           name: "Чат 1",
+          pinned: false,
           messages: [
             {
               id: crypto.randomUUID(),
@@ -49,6 +50,7 @@ function App() {
       const newChat = {
         id: newId,
         name: `Чат ${newId}`,
+        pinned: false,
         messages: [{ text: "Привет, чем могу помочь?", sender: "bot"}],
       };
       
@@ -97,6 +99,21 @@ function App() {
       );
   };
 
+  const togglePinChat = (chatId) => {
+    setChats((prevChats) => 
+      prevChats.map((chat) =>
+        chat.id === chatId
+          ? {...chat, pinned: !chat.pinned }
+          : chat
+        )
+      );
+  };
+
+  const sortedChats = [...chats].sort((a, b) => {
+    if (a.pinned === b.pinned) return 0;
+    return a.pinned ? -1 : 1;
+  });
+
 
   useEffect(() => {
     localStorage.setItem("chats", JSON.stringify(chats));
@@ -105,11 +122,12 @@ function App() {
   return (
     <div className="app">
       <Sidebar
-        chats={chats}
+        chats={sortedChats}
         activeChatId={activeChatId}
         onSelectChat={setActiveChatId}
         onCreateChat={createNewChat}
         onRenameChat={renameChat}
+        onTogglePinChat={togglePinChat}
         />
         
         <div className="chat-area">

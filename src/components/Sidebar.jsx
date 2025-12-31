@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../styles/sidebar.css";
 
 
-export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateChat, onRenameChat }) {
+export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateChat, onRenameChat, onTogglePinChat }) {
 
 	const [editingChatId, setEditingChatId] = useState(null);
 
@@ -25,9 +25,10 @@ export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateCha
 				{chats.map((chat) => (
 					<li
 						key={chat.id}
-						className={`chat-item ${
-							chat.id === activeChatId ? "active" : ""
-							}`}
+						className={`chat-item 
+							${chat.id === activeChatId ? "active" : ""}
+						  ${chat.pinned ? "pinned" : ""}
+							`}
 							onClick={() => onSelectChat(chat.id)}
 					>
 								{editingChatId === chat.id ? (
@@ -64,9 +65,10 @@ export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateCha
 									<span className="chat-action"
 									onClick={(e) => {
 										e.stopPropagation();
+										onTogglePinChat(chat.id);
 									}}
 									>
-										📌
+										{chat.pinned ? "📌" : "📍"}
 										</span>
 
 
