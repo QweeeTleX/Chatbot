@@ -26,3 +26,34 @@ body {
 	padding-top: 24px;
 	padding-bottom: 24px;
 }
+
+.undo-toast {
+	position: fixed;
+	bottom: 24px;
+	left: 50%;
+	transform: translateX(-50%);
+
+	background: #1f2228;
+	color: #eaeaea;
+
+	padding: 12px 16px;
+	border-radius: 12px;
+
+	display: flex;
+	gap: 12px;
+	align-items: center;
+
+	box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.undo-toast button {
+	background: none;
+	border: none;
+	color: #7aa2ff;
+	cursor: pointer;
+	font-weight: 500;
+}
+
+.undo-toast button:hover {
+	text-decoration: underline;
+}

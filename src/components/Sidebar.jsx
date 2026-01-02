@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../styles/sidebar.css";
 
 
-export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateChat, onRenameChat, onTogglePinChat }) {
+export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateChat, onRenameChat, onTogglePinChat, onDeleteChat, }) {
 
 	const [editingChatId, setEditingChatId] = useState(null);
 
@@ -72,9 +72,10 @@ export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateCha
 										</span>
 
 
-									<span className="chat-action"
+									<span className="chat-action danger"
 									onClick={(e) => {
 										e.stopPropagation();
+										onDeleteChat(chat.id);
 									}}
 									>
 										🗑️

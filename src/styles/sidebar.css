@@ -75,6 +75,13 @@
 	transform: scale(1.1);
 }
 
+.chat-action.danger {
+	color: #9a4a4a;
+}
+
+.chat-action.danger:hover {
+  color: #ff6b6b;
+}
 
 .chat-actions {
 	display: flex;

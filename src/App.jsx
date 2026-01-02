@@ -32,6 +32,9 @@ function App() {
     return Number(localStorage.getItem("activeChatId")) || 1;
   });
 
+  const [deletedChat, setDeletedChat] = useState(null);
+  const [undoTimer, setUndoTimer] = useState(null);
+
   useEffect(() => {
     localStorage.setItem("activeChatId", activeChatId);
   }, [activeChatId]);
@@ -109,6 +112,51 @@ function App() {
       );
   };
 
+  const deleteChat = (chatId) => {
+    setChats((prevChats) => {
+      const chatToDelete = prevChats.find((chat) => chat.id === chatId);
+      if (!chatToDelete) return prevChats;
+
+
+      setDeletedChat(chatToDelete);
+
+
+      if (undoTimer) {
+        clearTimeout(undoTimer);
+      }
+
+      const timer = setTimeout(() => {
+        setDeletedChat(null);
+        setUndoTimer(null);
+      }, 5000);
+
+      setUndoTimer(timer);
+
+      const filtered = prevChats.filter((chat) => chat.id !== chatId);
+
+
+      if (chatId === activeChatId) {
+        const nextChat = filtered[0];
+        setActiveChatId(nextChat ? nextChat.id : null);
+      }
+
+      return filtered;
+    });
+  };
+
+  const undoDeleteChat = () => {
+    if (!deletedChat) return;
+
+    setChats((prevChats) => [deletedChat, ...prevChats]);
+
+    setDeletedChat(null);
+
+    if (undoTimer) {
+      clearTimeout(undoTimer);
+      setUndoTimer(null);
+    }
+  };
+
   const sortedChats = [...chats].sort((a, b) => {
     if (a.pinned === b.pinned) return 0;
     return a.pinned ? -1 : 1;
@@ -128,6 +176,7 @@ function App() {
         onCreateChat={createNewChat}
         onRenameChat={renameChat}
         onTogglePinChat={togglePinChat}
+        onDeleteChat={deleteChat}
         />
         
         <div className="chat-area">
@@ -139,6 +188,13 @@ function App() {
           />
         )}
     </div>
+
+    {deletedChat && (
+      <div className="undo-toast">
+        <span>Чат удалён</span>
+        <button onClick={undoDeleteChat}>Отменить</button>
+      </div>
+    )}
     </div>
   );
 }
