@@ -114,11 +114,21 @@ function App() {
 
   const deleteChat = (chatId) => {
     setChats((prevChats) => {
+      const index = prevChats.findIndex((chat) => chat.id === chatId);
+      if (index === -1) return prevChats;
+
+      const chatToDelete = prevChats[index];
+
+
+      /*
       const chatToDelete = prevChats.find((chat) => chat.id === chatId);
       if (!chatToDelete) return prevChats;
 
+      const index = prevChats.findIndex((chat) => chat.id === chatId);
+      const chatToDelete = prevChats[index];
+      */
 
-      setDeletedChat(chatToDelete);
+      setDeletedChat({ chat: chatToDelete, index });
 
 
       if (undoTimer) {
@@ -147,6 +157,22 @@ function App() {
   const undoDeleteChat = () => {
     if (!deletedChat) return;
 
+    const { chat, index } = deletedChat;
+
+    setChats((prevChats) => [
+      ...prevChats.slice(0, index),
+      chat,
+      ...prevChats.slice(index),
+    ]);
+
+    setDeletedChat(null);
+
+    if (undoTimer) {
+      clearTimeout(undoTimer);
+      setUndoTimer(null);
+    
+
+    /*
     setChats((prevChats) => [deletedChat, ...prevChats]);
 
     setDeletedChat(null);
@@ -154,6 +180,8 @@ function App() {
     if (undoTimer) {
       clearTimeout(undoTimer);
       setUndoTimer(null);
+
+      */
     }
   };
 
