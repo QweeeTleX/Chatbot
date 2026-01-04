@@ -43,3 +43,33 @@ font-size: 14px;
   opacity: 0.9;
   transform: scale(1.05);
 }
+
+.app.dark .input-box {
+  background-color: #202328;
+  border: 1px solid transparent;
+}
+
+.app.dark .input-box input {
+  color: #fff;
+}
+
+.app.dark .input-box input::placeholder {
+  color: #9aa0aa;
+}
+
+.app.light .input-box {
+  background-color: #f1f3f5;
+  border: 1px solid #e0e0e0;
+}
+
+.app.light .input-box input {
+  color: #111;
+}
+
+.app.light .input-box input::placeholder {
+  color: #888;
+}
+
+.app.light .send-btn {
+  background: linear-gradient(135deg, #6d6ae6, #514dcf);
+}

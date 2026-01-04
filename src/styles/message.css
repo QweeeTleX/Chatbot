@@ -14,3 +14,18 @@
 	  background: #2a2d33;
   	color: #eaeaea;
 }
+
+.app.light .message.user {
+	background: linear-gradient(135deg, #6d6ae6, #514dcf);
+	color: #fff;
+}
+
+.app.light .message.bot {
+  background: #f1f3f5;
+  color: #222;
+  border: 1px solid #e0e0e0;
+}
+
+.app.dark .message.bot {
+	border: 1px solid transparent;
+}

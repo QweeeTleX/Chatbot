@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../styles/sidebar.css";
 
 
-export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateChat, onRenameChat, onTogglePinChat, onDeleteChat, }) {
+export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateChat, onRenameChat, onTogglePinChat, onDeleteChat, theme, onToggleTheme }) {
 
 	const [editingChatId, setEditingChatId] = useState(null);
 
@@ -19,6 +19,9 @@ export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateCha
 	return (
 		<div className="sidebar">
 			<h2>Чаты</h2>
+			<button className="theme-toggle" onClick={onToggleTheme}>
+				{theme === "dark" ? "🌙 Тёмная" : "☀️ Светлая"}
+			</button>
 			<button className="new-chat" onClick={onCreateChat}>+ Новый чат</button>
 
 			<ul>

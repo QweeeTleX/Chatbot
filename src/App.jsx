@@ -35,6 +35,15 @@ function App() {
   const [deletedChat, setDeletedChat] = useState(null);
   const [undoTimer, setUndoTimer] = useState(null);
 
+  const [theme, setTheme] = useState (() => {
+    return localStorage.getItem("theme") || "dark";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+
+  }, [theme]);
+
   useEffect(() => {
     localStorage.setItem("activeChatId", activeChatId);
   }, [activeChatId]);
@@ -196,7 +205,7 @@ function App() {
   }, [chats]);
 
   return (
-    <div className="app">
+    <div className={`app ${theme}`}>
       <Sidebar
         chats={sortedChats}
         activeChatId={activeChatId}
@@ -205,6 +214,10 @@ function App() {
         onRenameChat={renameChat}
         onTogglePinChat={togglePinChat}
         onDeleteChat={deleteChat}
+        theme={theme}
+        onToggleTheme={() =>
+          setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+        }
         />
         
         <div className="chat-area">
