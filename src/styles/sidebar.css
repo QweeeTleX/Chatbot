@@ -229,3 +229,45 @@
 .app.light .sidebar ul {
   scrollbar-color: rgba(100, 116, 139, 0.5) transparent;
 }
+
+.sidebar-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.theme-toggle {
+	cursor: pointer;
+	border-radius: 8px;
+	border: none;
+
+	font-size: 14px;
+	
+	transition: background-color 0.15s ease;
+}
+
+.app.dark .theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.app.light .theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.app.dark .theme-toggle {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.app.dark .theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.app.light .theme-toggle {
+  background: #374151;
+  color: #ffffff;
+}
+
+.app.light .theme-toggle:hover {
+  background: #2f3640;  
+}

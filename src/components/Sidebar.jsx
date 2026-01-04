@@ -18,10 +18,13 @@ export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateCha
 
 	return (
 		<div className="sidebar">
+			<div className="sidebar-header">
 			<h2>Чаты</h2>
 			<button className="theme-toggle" onClick={onToggleTheme}>
-				{theme === "dark" ? "🌙 Тёмная" : "☀️ Светлая"}
+				{theme === "dark" ? "🌙" : "☀️"}
 			</button>
+			</div>
+			
 			<button className="new-chat" onClick={onCreateChat}>+ Новый чат</button>
 
 			<ul>
