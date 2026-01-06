@@ -17,8 +17,9 @@ function App() {
           messages: [
             {
               id: crypto.randomUUID(),
-              text: "Привет, чем могу помочь?",
               sender: "bot",
+              type: "text",
+              content: "Привет, чем могу помочь?",
               timestamp: Date.now(),
             },
 
@@ -63,7 +64,15 @@ function App() {
         id: newId,
         name: `Чат ${newId}`,
         pinned: false,
-        messages: [{ text: "Привет, чем могу помочь?", sender: "bot"}],
+        messages: [
+          {
+             id: crypto.randomUUID(),
+             sender: "bot",
+            type: "text",
+            content: "Привет, чем могу помочь?",
+            timestamp: Date.now(),
+          },
+        ],
       };
       
       setActiveChatId(newId);
@@ -75,7 +84,7 @@ function App() {
   };
   
 
-  const sendMessage = (text) => {
+  const sendMessage = (message) => {
     setChats((prevChats) =>
       prevChats.map((chat) => 
         chat.id === activeChatId
@@ -83,17 +92,25 @@ function App() {
               ...chat,
               messages: [
                 ...chat.messages,
+
                 { 
                   id: crypto.randomUUID(),
-                  text,
                   sender: "user",
+                  type: message.type,
+                  content: message.content,
                   timestamp: Date.now(),
                 },
+
                 { id: crypto.randomUUID(),
-                  text: "Заглушка ответа хули",
                   sender: "bot",
+                  type: "text",
+                  content:
+                    message.type === "image"
+                    ? "Анализирую изображение и генерирую ответ..."
+                    : "Заглушка ответа В)",
                 timestamp: Date.now(),
                },
+
               ],
           }
         : chat
@@ -101,27 +118,6 @@ function App() {
     );
   };
 
-  const sendImage = (src) => {
-    setChats((prevChats) => 
-      prevChats.map((chat) => 
-      chat.id === activeChatId
-        ? {
-          ...chat,
-          messages: [
-            ...chat.messages,
-            {
-              id: crypto.randomUUID(),
-              type: "image",
-              src,
-              sender: "user",
-              timestamp: Date.now(),
-            },
-          ],
-        }
-        : chat
-      )
-    );
-  };
 
   const renameChat = (chatId, newName) => {
     setChats((prevChats) => 
@@ -248,7 +244,6 @@ function App() {
           chatId={activeChatId}
           messages={activeChat.messages}
           onSend={sendMessage}
-          onSendImage={sendImage}
           />
         )}
     </div>

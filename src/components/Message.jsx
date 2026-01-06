@@ -1,14 +1,18 @@
 import "../styles/message.css";
 
-export default function Message({ type = "text", text, src, sender }) {
-	if (type === "image") {
-		return (
-			<div className={`message ${sender}`}>
-				<img src={src} alt="attachment" className="message-image" />
-			</div>
-		);
-	}
-	return <div className={`message ${sender}`}>{text}</div>;
-}
+export default function Message({ sender, type, content }) {
+	return (
+		<div className={`message ${sender}`}>
+			{type === "text" && <span>{content}</span>}
 
+			{type === "image" && (
+				<img
+					src={content}
+					alt="sent"
+					className="message-image"
+					/>
+			)}
+		</div>
+	);
+}	
 

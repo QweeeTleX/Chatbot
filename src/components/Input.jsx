@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import "../styles/input.css";
 
-export default function Input({ onSend, onSendImage }) {
+export default function Input({ onSend }) {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -23,57 +23,59 @@ export default function Input({ onSend, onSendImage }) {
   };
 
   const handleSend = () => {
-    if (imagePreview) {
-      onSendImage(imagePreview);
-      setImagePreview(null);
-      return;
-    }
+    if (!text.trim() && !imagePreview) return;
+    
 
-    if (!text.trim()) return;
+    const message = imagePreview
+    ? { type: "image", content: imagePreview }
+    : { type: "text", content: text };
 
-    onSend(text);
+    onSend(message);
+
     setText("");
+    setImagePreview(null);
   };
 
-  return (
-    <div className="input-wrapper">
-      <div className="input-media">
-        {imagePreview && (
-          <div className="image-preview">
-            <img src={imagePreview} alt="preview" />
-            <button
-              className="image-preview-close"
-              onClick={() => setImagePreview(null)}
-            >
-              ✕
-            </button>
-          </div>
-        )}
-
-        <button className="attach-btn" onClick={handlePickImage}>
-          📎
-        </button>
+return (
+  <div className="input-wrapper">
+    {imagePreview && (
+      <div className="input-preview">
+        <div className="image-preview">
+          <img src={imagePreview} alt="preview" />
+          <button
+            className="image-preview-close"
+            onClick={() => setImagePreview(null)}
+          >
+            ✕
+          </button>
+        </div>
       </div>
-      <div className="input-main">
-        <input
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Введите сообщение..."
-          onKeyDown={(e) => e.key === "Enter" && handleSend()}
-        />
+    )}
 
-        <button onClick={handleSend} className="send-btn">
-          ➤
-        </button>
-      </div>
+    <div className="input-row">
+      <button className="attach-btn" onClick={handlePickImage}>
+        📎
+      </button>
 
       <input
-        type="file"
-        accept="image/*"
-        ref={fileInputRef}
-        onChange={handleImageChange}
-        hidden
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Введите сообщение..."
+        onKeyDown={(e) => e.key === "Enter" && handleSend()}
       />
+
+      <button onClick={handleSend} className="send-btn">
+        ➤
+      </button>
     </div>
-  );
+
+    <input
+      type="file"
+      accept="image/*"
+      ref={fileInputRef}
+      onChange={handleImageChange}
+      hidden
+    />
+  </div>
+);
 }

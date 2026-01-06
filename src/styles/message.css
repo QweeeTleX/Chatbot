@@ -1,18 +1,29 @@
 .message {
+	max-width: 70%;
 	padding: 12px 14px;
-	margin-bottom: 10px;
 	border-radius: 12px;
 	line-height: 1.4;
+	word-wrap: break-word;
+}
+
+.messages {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
 }
 
 .message.user {
+	align-self: flex-end;
 	background: linear-gradient(135deg, #5a5597, #433c75);
-	
+	color: #fff;
+	border-bottom-right-radius: 4px;
 }
 
 .message.bot {
+	align-self: flex-start;
 	  background: #2a2d33;
   	color: #eaeaea;
+		border-bottom-left-radius: 4px;
 }
 
 .message-image {
