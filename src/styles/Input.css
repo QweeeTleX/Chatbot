@@ -44,6 +44,20 @@ font-size: 14px;
   transform: scale(1.05);
 }
 
+.image-preview {
+  display: flex;
+  align-items: center;
+  gap: 8xp;
+  padding: 6px;
+}
+
+.image-preview img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
 .app.dark .input-box {
   background-color: #202328;
   border: 1px solid transparent;

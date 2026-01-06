@@ -36,6 +36,11 @@
   transition: background-color 0.15s ease;
 }
 
+.chat-item:hover .chat-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .chat-title {
 	display: block;
 
