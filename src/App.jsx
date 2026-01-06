@@ -101,6 +101,28 @@ function App() {
     );
   };
 
+  const sendImage = (src) => {
+    setChats((prevChats) => 
+      prevChats.map((chat) => 
+      chat.id === activeChatId
+        ? {
+          ...chat,
+          messages: [
+            ...chat.messages,
+            {
+              id: crypto.randomUUID(),
+              type: "image",
+              src,
+              sender: "user",
+              timestamp: Date.now(),
+            },
+          ],
+        }
+        : chat
+      )
+    );
+  };
+
   const renameChat = (chatId, newName) => {
     setChats((prevChats) => 
       prevChats.map((chat) =>
@@ -226,6 +248,7 @@ function App() {
           chatId={activeChatId}
           messages={activeChat.messages}
           onSend={sendMessage}
+          onSendImage={sendImage}
           />
         )}
     </div>

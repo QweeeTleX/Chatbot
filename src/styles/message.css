@@ -15,6 +15,13 @@
   	color: #eaeaea;
 }
 
+.message-image {
+	max-width: 240px;
+	max-height: 240px;
+	border-radius: 12px;
+	display: block;
+}
+
 .app.light .message.user {
 	background: linear-gradient(135deg, #6d6ae6, #514dcf);
 	color: #fff;
