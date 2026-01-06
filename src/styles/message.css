@@ -20,8 +20,8 @@
 }
 
 .message.bot {
-	align-self: flex-start;
-	  background: #2a2d33;
+	  background: none;
+		padding: 0;
   	color: #eaeaea;
 		border-bottom-left-radius: 4px;
 }
