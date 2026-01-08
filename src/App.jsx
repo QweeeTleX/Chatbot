@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Chat from "./components/Chat";
+import EmptyState from "./components/EmptyState";
 import "./styles/app.css";
 
 function App() {
@@ -64,15 +65,7 @@ function App() {
         id: newId,
         name: `Чат ${newId}`,
         pinned: false,
-        messages: [
-          {
-             id: crypto.randomUUID(),
-             sender: "bot",
-            type: "text",
-            content: "Привет, чем могу помочь?",
-            timestamp: Date.now(),
-          },
-        ],
+        messages: [],
       };
       
       setActiveChatId(newId);
@@ -239,7 +232,9 @@ function App() {
         />
         
         <div className="chat-area">
-        {activeChat && (
+        {!activeChat || activeChat.messages.length === 0 ? (
+          <EmptyState onSend={sendMessage} />
+        ) : (
         <Chat
           chatId={activeChatId}
           messages={activeChat.messages}

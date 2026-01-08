@@ -12,11 +12,17 @@
 	gap: 12px;
 }
 
-.message.user {
+.message.user.text {
 	align-self: flex-end;
 	background: linear-gradient(135deg, #5a5597, #433c75);
 	color: #fff;
 	border-bottom-right-radius: 4px;
+}
+
+.message.user.image {
+	align-self: flex-end;
+	background: none;
+	padding: 0;
 }
 
 .message.bot {
@@ -33,15 +39,15 @@
 	display: block;
 }
 
+
+
 .app.light .message.user {
 	background: linear-gradient(135deg, #6d6ae6, #514dcf);
 	color: #fff;
 }
 
 .app.light .message.bot {
-  background: #f1f3f5;
   color: #222;
-  border: 1px solid #e0e0e0;
 }
 
 .app.dark .message.bot {
