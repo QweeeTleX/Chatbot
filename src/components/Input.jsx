@@ -22,19 +22,36 @@ export default function Input({ onSend }) {
     e.target.value = "";
   };
 
-  const handleSend = () => {
-    if (!text.trim() && !imagePreview) return;
-    
-    
-    const message = imagePreview
-    ? { type: "image", content: imagePreview }
-    : { type: "text", content: text };
-    
-    onSend(message);
+const handleSend = () => {
+  if (!text.trim() && !imagePreview) return;
 
-    setText("");
-    setImagePreview(null);
-  };
+  let message;
+
+  if (text.trim() && imagePreview) {
+    message = {
+      type: "mixed",
+      content: {
+        text,
+        image: imagePreview,
+      },
+    };
+  } else if (imagePreview) {
+    message = {
+      type: "image",
+      content: imagePreview,
+    };
+  } else {
+    message = {
+      type: "text",
+      content: text,
+    };
+  }
+
+  onSend(message);
+
+  setText("");
+  setImagePreview(null);
+};
 
 return (
   <div className="input-wrapper">

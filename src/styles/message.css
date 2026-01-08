@@ -1,4 +1,4 @@
-.message {
+.message:not(.mixed) {
 	max-width: 70%;
 	padding: 12px 14px;
 	border-radius: 12px;
@@ -30,13 +30,56 @@
 	padding: 0;
 }
 
+.message.user.mixed {
+	display: flex;
+	flex-direction: column;
+
+	align-self: flex-end;
+	align-items: flex-end;
+	gap: 10px;
+
+	padding: 0;
+	border-radius: 0;
+
+  background: none;
+
+	border: none;
+}
+
+.message.user.mixed .message-text {
+	padding: 8px 14px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  max-width: 420px;
+}
+
+.message.user.mixed .message-image {
+  border-radius: 12px;
+  background: none;
+  padding: 0;
+}
+
+.app.dark .message.user.mixed .message-text {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.app.light .message.user.mixed .message-text {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: #111111;
+}
+
+
+
 .message.bot {
 	  background: none;
 		padding: 0;
   	color: #eaeaea;
 }
-
-
 
 .message-image {
 	max-width: 240px;
@@ -62,6 +105,8 @@
 	border-color: rgba(255, 255, 255, 0.14);
 	color: #ffffff;
 }
+
+
 
 .app.dark .message.bot {
 	color: #eaeaea;

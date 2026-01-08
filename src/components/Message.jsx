@@ -1,13 +1,10 @@
 import "../styles/message.css";
 
-
 export default function Message({ sender, type, content }) {
   return (
     <div className={`message ${sender} ${type}`}>
       {type === "text" && (
-        <div className="message-text">
-          {content}
-        </div>
+        <div className="message-text">{content}</div>
       )}
 
       {type === "image" && (
@@ -17,9 +14,19 @@ export default function Message({ sender, type, content }) {
           className="message-image"
         />
       )}
+
+      {type === "mixed" && (
+        <>
+          <img
+            src={content.image}
+            alt="attachment"
+            className="message-image"
+          />
+          <div className="message-text">
+            {content.text}
+          </div>
+        </>
+      )}
     </div>
   );
 }
-
-
-
