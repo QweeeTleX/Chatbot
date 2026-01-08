@@ -1,5 +1,6 @@
 import "../styles/message.css";
 
+
 export default function Message({ sender, type, content }) {
   return (
     <div className={`message ${sender} ${type}`}>
@@ -19,3 +20,6 @@ export default function Message({ sender, type, content }) {
     </div>
   );
 }
+
+
+

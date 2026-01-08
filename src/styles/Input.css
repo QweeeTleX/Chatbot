@@ -63,7 +63,7 @@
 
 .input-row {
   display: flex;
-  align-items: center; /* 📎 и placeholder на одной линии */
+  align-items: center;
   gap: 8px;
 }
 
@@ -74,6 +74,21 @@
   outline: none;
 
   font-size: 14px;
+}
+
+.input-row textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+
+  font-size: 14px;
+  line-height: 1.4;
+  font-family: inherit;
+  
+
+  resize: none;
+  overflow: hidden;
 }
 
 .attach-btn {
@@ -118,6 +133,10 @@
   color: #fff;
 }
 
+.app.dark .input-row textarea {
+  color: #fff;
+}
+
 .app.dark .input-row input::placeholder {
   color: #9aa0aa;
 }
@@ -128,6 +147,10 @@
 }
 
 .app.light .input-row input {
+  color: #111;
+}
+
+.app.light .input-row textarea {
   color: #111;
 }
 

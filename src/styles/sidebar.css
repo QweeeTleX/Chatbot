@@ -73,9 +73,6 @@
 	transform: scale(1.1);
 }
 
-
-
-
 .chat-actions {
 	display: flex;
 
@@ -121,7 +118,7 @@
 }
 
 .app.dark .sidebar {
-	background: linear-gradient(180deg, #181a1f, #14161b);
+	background: linear-gradient(180deg, #17181c, #121317);
 	border-right: 1px solid #2a2d33;
 	color: #eaeaea;
 }

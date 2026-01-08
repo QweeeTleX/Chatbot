@@ -4,6 +4,7 @@
 	border-radius: 12px;
 	line-height: 1.4;
 	word-wrap: break-word;
+	white-space: pre-wrap;
 }
 
 .messages {
@@ -15,8 +16,7 @@
 .message.user.text {
 	align-self: flex-end;
 
-	background: transparent;
-	border-radius: 999px;
+	border-radius: 18px;
 
 	padding: 8px 14px;
 	font-size: 14px;

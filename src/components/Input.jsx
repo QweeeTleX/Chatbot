@@ -25,11 +25,11 @@ export default function Input({ onSend }) {
   const handleSend = () => {
     if (!text.trim() && !imagePreview) return;
     
-
+    
     const message = imagePreview
     ? { type: "image", content: imagePreview }
     : { type: "text", content: text };
-
+    
     onSend(message);
 
     setText("");
@@ -57,11 +57,17 @@ return (
         📎
       </button>
 
-      <input
+      <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Введите сообщение..."
-        onKeyDown={(e) => e.key === "Enter" && handleSend()}
+        rows={1}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
+          }
+        }}
       />
 
       <button onClick={handleSend} className="send-btn">
