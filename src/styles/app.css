@@ -21,7 +21,10 @@ body {
 .chat-area {
 	flex: 1;
 	display: flex;
-	justify-content: center; 
+
+	justify-content: center;
+	align-items: stretch;
+	
 	padding-top: 24px;
 	padding-bottom: 24px;
 }

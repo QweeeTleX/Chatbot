@@ -67,15 +67,6 @@
   gap: 8px;
 }
 
-.input-row input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-
-  font-size: 14px;
-}
-
 .input-row textarea {
   flex: 1;
   background: transparent;
@@ -129,33 +120,18 @@
   border: 1px solid transparent;
 }
 
-.app.dark .input-row input {
-  color: #fff;
-}
-
 .app.dark .input-row textarea {
   color: #fff;
 }
 
-.app.dark .input-row input::placeholder {
-  color: #9aa0aa;
-}
 
 .app.light .input-wrapper {
   background-color: #f1f3f5;
   border: 1px solid #e0e0e0;
 }
 
-.app.light .input-row input {
-  color: #111;
-}
-
 .app.light .input-row textarea {
   color: #111;
-}
-
-.app.light .input-row input::placeholder {
-  color: #888;
 }
 
 .app.light .send-btn {

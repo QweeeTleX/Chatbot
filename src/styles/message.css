@@ -1,4 +1,4 @@
-.message:not(.mixed) {
+.message {
 	max-width: 70%;
 	padding: 12px 14px;
 	border-radius: 12px;
@@ -8,9 +8,17 @@
 }
 
 .messages {
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 20px;
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(180, 185, 195, 0.6) transparent;
 }
 
 .message.user.text {
@@ -40,26 +48,15 @@
 
 	padding: 0;
 	border-radius: 0;
-
-  background: none;
-
-	border: none;
 }
 
 .message.user.mixed .message-text {
 	padding: 8px 14px;
   border-radius: 18px;
   font-size: 14px;
-  line-height: 1.4;
-  white-space: pre-wrap;
   max-width: 420px;
 }
 
-.message.user.mixed .message-image {
-  border-radius: 12px;
-  background: none;
-  padding: 0;
-}
 
 .app.dark .message.user.mixed .message-text {
   background: rgba(255, 255, 255, 0.06);
@@ -73,10 +70,7 @@
   color: #111111;
 }
 
-
-
 .message.bot {
-	  background: none;
 		padding: 0;
   	color: #eaeaea;
 }
@@ -87,8 +81,6 @@
 	border-radius: 12px;
 	display: block;
 }
-
-
 
 .app.light .message.user.text {
 	background: transparent;
@@ -104,10 +96,4 @@
 	background: rgba(255, 255, 255, 0.06);
 	border-color: rgba(255, 255, 255, 0.14);
 	color: #ffffff;
-}
-
-
-
-.app.dark .message.bot {
-	color: #eaeaea;
 }

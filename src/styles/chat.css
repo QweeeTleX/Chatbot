@@ -2,20 +2,10 @@
 
 	display: flex;
 	flex-direction: column;
+
 	width: 100%;
+	max-width: 1000px;
 	height: 100%;
 
-
-	max-width: 1000px;
-
   background: transparent;
-}
-
-.messages {
-	flex: 1;
-	padding: 20px;
-	overflow-y: auto;
-	
-	scrollbar-width: thin;
-	scrollbar-color: rgba(180, 185, 195, 0.6) transparent;
 }
