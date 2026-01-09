@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import Chat from "./components/Chat";
 import EmptyState from "./components/EmptyState";
 import { useChats } from "./hooks/useChats";
+import Footer from "./components/Footer";
 import "./styles/app.css";
 
 function App() {
@@ -142,6 +143,7 @@ function App() {
         <button onClick={undoDeleteChat}>Отменить</button>
       </div>
     )}
+    <Footer />
     </div>
   );
 }

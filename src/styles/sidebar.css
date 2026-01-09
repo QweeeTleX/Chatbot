@@ -118,9 +118,16 @@
 }
 
 .app.dark .sidebar {
-	background: linear-gradient(180deg, #17181c, #121317);
-	border-right: 1px solid #2a2d33;
-	color: #eaeaea;
+  background: linear-gradient(
+    90deg,
+    #1d2028 0%,
+		#1b1e25 35%,
+    #191b21 65%,
+    rgba(25, 27, 33, 0.85) 80%,
+    rgba(25, 27, 33, 0.45) 100%
+  );
+
+  color: #eaeaea;
 }
 
 .app.dark .sidebar h2 {
@@ -168,8 +175,14 @@
 }
 
 .app.light .sidebar {
-  background: linear-gradient(180deg, #f5f6f8, #eceef1);
-  border-right: 1px solid #e0e0e0;
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #f3f4f6 65%,
+    rgba(243, 244, 246, 0.9) 85%,
+    rgba(243, 244, 246, 0.6) 100%
+  );
+
   color: #222;
 }
 

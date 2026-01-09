@@ -6,8 +6,13 @@
 }
 
 .app.dark {
-	background: linear-gradient(180deg, #1f2228, #181a1f);
+  background: linear-gradient(
+    180deg,
+    #191b21 0%,
+    #181a1f 100%
+  );
 }
+
 
 .app.light {
 	background: #f4f5f7;
@@ -24,9 +29,11 @@ body {
 
 	justify-content: center;
 	align-items: stretch;
-	
+
 	padding-top: 24px;
 	padding-bottom: 24px;
+
+	background: transparent;
 }
 
 .undo-toast {
