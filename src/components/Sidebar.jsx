@@ -18,6 +18,10 @@ export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateCha
 
 	return (
 		<div className="sidebar">
+			<div className="sidebar-logo">
+				  <span className="logo-icon">☄️</span>
+  				<span className="logo-text">SUPER</span>
+			</div>
 			<div className="sidebar-header">
 			<h2>Чаты</h2>
 			<button className="theme-toggle" onClick={onToggleTheme}>
@@ -25,7 +29,9 @@ export default function Sidebar({ chats, activeChatId, onSelectChat, onCreateCha
 			</button>
 			</div>
 			
-			<button className="new-chat" onClick={onCreateChat}>+ Новый чат</button>
+			<div className="sidebar-action" onClick={onCreateChat}>
+				<span className="sidebar-action-icon">＋</span>
+				<span className="sidebar-action-text">Новый чат</span></div>
 
 			<ul>
 				{chats.map((chat) => (

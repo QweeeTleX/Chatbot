@@ -2,21 +2,57 @@
 	width: 260px;
 	padding: 15px;
 	flex-shrink: 0;
+	position: relative;
+  z-index: 20;
 }
 
-.new-chat {
-	width: 100%;
-	padding: 10px;
-	margin-bottom: 15px;
-  
-  
-  border-radius: 10px;
+.sidebar-logo {
+	display: flex;
+	align-items: center;
+	gap: 10px;
 
+	padding: 10px 12px;
+	margin-bottom: 12px;
+
+	border-radius: 12px;
+	cursor: pointer;
+	user-select: none;
+
+	font-size: 16px;
+	font-weight: 600;
+
+	transition: background-color 0.15s ease;
+}
+
+.logo-icon {
+	font-size: 20px;
+	line-height: 1;
+}
+
+.logo-text {
+  letter-spacing: 0.04em;
+}
+
+.sidebar-action {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	padding: 10px 12px;
+	margin-bottom: 12xp;
+
+	border-radius: 10px;
+	cursor: pointer;
 	
-  cursor: pointer;
+	font-size: 14px;
+	font-weight: 500;
 
-	transition: background-color 0.15s ease, border-color 0.15s ease;
+	transition: background-color 0.15s ease;
+}
 
+.sidebar-action-icon {
+  font-size: 18px;
+  line-height: 1;
 }
 
 .chat-item {
@@ -36,10 +72,12 @@
   transition: background-color 0.15s ease;
 }
 
-.chat-item:hover .chat-actions {
+.chat-item:hover .chat-actions,
+.chat-actions:hover {
   opacity: 1;
   pointer-events: auto;
 }
+
 
 .chat-title {
 	display: block;
@@ -130,20 +168,26 @@
   color: #eaeaea;
 }
 
+.app.dark .sidebar-logo {
+  color: #eaeaea;
+}
+
+.app.dark .sidebar-logo:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .app.dark .sidebar h2 {
 	color: #9aa0aa;
 }
 
-.app.dark .new-chat {
-	background-color: #202328;
-	border: 1px solid #2a2d33;
-	color: #eaeaea;
+.app.dark .sidebar-action {
+  color: #eaeaea;
 }
 
-.app.dark .new-chat:hover {
-	background: #262a30;
-	border-color: #3a3f47;
+.app.dark .sidebar-action:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
+
 
 .app.dark .chat-item {
 	color:#eaeaea;
@@ -186,21 +230,25 @@
   color: #222;
 }
 
+.app.light .sidebar-logo {
+  color: #111827;
+}
+
+.app.light .sidebar-logo:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
 
 .app.light .sidebar h2 {
   color: #6b7280;
 }
 
-
-.app.light .new-chat {
-  background: #ffffff;
-  border: 1px solid #d1d5db;
+.app.light .sidebar-action {
   color: #111827;
 }
 
-.app.light .new-chat:hover {
-  background: #f3f4f6;
-  border-color: #cbd5e1;
+.app.light .sidebar-action:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 
