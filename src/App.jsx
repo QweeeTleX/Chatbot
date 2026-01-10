@@ -28,7 +28,7 @@ function App() {
     return localStorage.getItem("theme") || "dark";
   });
 
-  
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
@@ -125,6 +125,8 @@ function App() {
         onToggleTheme={() =>
           setTheme((prev) => (prev === "dark" ? "light" : "dark"))
         }
+        collapsed={isSidebarCollapsed}
+        onToggleCollapse={() => setIsSidebarCollapsed((v) => !v)}
         />
         
         <div className="chat-area">

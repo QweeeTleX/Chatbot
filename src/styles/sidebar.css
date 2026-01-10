@@ -4,7 +4,92 @@
 	flex-shrink: 0;
 	position: relative;
   z-index: 20;
+
+	overflow-x: hidden;
+	overflow-y: hidden;
+	transition: width 0.25s ease;
 }
+
+.sidebar.collapsed {
+  width: 56px;
+  padding: 8px;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.logo-icon {
+  font-size: 18px;
+	line-height: 1;
+  transition: opacity 0.15s ease;
+}
+
+.logo-text {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.collapse-toggle {
+  margin-left: auto;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+}
+
+.collapse-toggle:hover {
+  opacity: 1;
+}
+
+.sidebar.collapsed .logo-icon {
+  opacity: 1;
+}
+
+.sidebar.collapsed:hover .logo-icon {
+  opacity: 0;
+}
+
+
+.sidebar.collapsed .collapse-toggle {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.sidebar.collapsed:hover .collapse-toggle {
+  opacity: 1;
+}
+
+.sidebar.collapsed .sidebar-action {
+  justify-content: center;
+  padding: 8px;
+}
+
+
+.sidebar.collapsed .logo-text,
+.sidebar.collapsed .sidebar-action-text,
+.sidebar.collapsed .chat-title,
+.sidebar.collapsed h2 {
+  display: none;
+}
+
+.collapse-toggle {
+  margin-left: auto;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+}
+
+.collapse-toggle:hover {
+  opacity: 1;
+}
+
 
 .sidebar-logo {
 	display: flex;
@@ -27,10 +112,6 @@
 .logo-icon {
 	font-size: 20px;
 	line-height: 1;
-}
-
-.logo-text {
-  letter-spacing: 0.04em;
 }
 
 .sidebar-action {
