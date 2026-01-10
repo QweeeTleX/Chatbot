@@ -28,7 +28,7 @@ export default function Sidebar({
   return (
     <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
       <div className="sidebar-logo">
-        <span className="logo-icon">☄️</span>
+        <span className="logo-icon" onClick={() => onSelectChat(null)} title="Перейти на главный экран">☄️</span>
         <span
           className="collapse-toggle"
           onClick={onToggleCollapse}
