@@ -1,21 +1,6 @@
 import { useEffect, useState } from "react";
 
-const default_chats = [
-  {
-    id: crypto.randomUUID(),
-    name: "Чат 1",
-    pinned: false,
-    messages: [
-      {
-        id: crypto.randomUUID(),
-        sender: "bot",
-        type: "text",
-        content: "Привет, чем могу помочь?",
-        timestamp: Date.now(),
-      },
-    ],
-  },
-];
+const default_chats = [];
 
 export function useChats() {
   const [chats, setChats] = useState(() => {
