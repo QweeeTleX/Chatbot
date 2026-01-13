@@ -3,102 +3,134 @@ import "../styles/input.css";
 
 export default function Input({ onSend }) {
   const [text, setText] = useState("");
-  const [imagePreview, setImagePreview] = useState(null);
+  const [images, setImages] = useState([]);
 
   const fileInputRef = useRef(null);
+
+  const MAX_IMAGES = 10;
 
   const handlePickImage = () => {
     fileInputRef.current?.click();
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (!file || !file.type.startsWith("image/")) return;
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
 
-    const reader = new FileReader();
-    reader.onload = () => setImagePreview(reader.result);
-    reader.readAsDataURL(file);
+    const slots = MAX_IMAGES - images.length;
+    const toAdd = files.slice(0, slots);
+
+    toAdd.forEach((file) => {
+      if (!file.type.startsWith("image/")) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImages((prev) => [...prev, reader.result]);
+      };
+      reader.readAsDataURL(file);
+    });
 
     e.target.value = "";
   };
 
-const handleSend = () => {
-  if (!text.trim() && !imagePreview) return;
+  const handleSend = () => {
+    if (!text.trim() && images.length === 0) return;
 
-  let message;
+    let message;
 
-  if (text.trim() && imagePreview) {
-    message = {
-      type: "mixed",
-      content: {
-        text,
-        image: imagePreview,
-      },
-    };
-  } else if (imagePreview) {
-    message = {
-      type: "image",
-      content: imagePreview,
-    };
-  } else {
-    message = {
-      type: "text",
-      content: text,
-    };
-  }
+    if (text.trim() && images.length === 1) {
+      message = {
+        type: "mixed",
+        content: {
+          text,
+          image: images[0],
+        },
+      };
+    } else if (text.trim() && images.length > 1) {
+      message = {
+        type: "mixed",
+        content: {
+          text,
+          images,
+        },
+      };
+    } else if (images.length === 1) {
+      message = {
+        type: "image",
+        content: images[0],
+      };
+    } else if (images.length > 1) {
+      message = {
+        type: "images",
+        content: images,
+      };
+    } else {
+      message = {
+        type: "text",
+        content: text,
+      };
+    }
 
-  onSend(message);
+    onSend(message);
 
-  setText("");
-  setImagePreview(null);
-};
+    setText("");
+    setImages([]);
+  };
 
-return (
-  <div className="input-wrapper">
-    {imagePreview && (
-      <div className="input-preview">
-        <div className="image-preview">
-          <img src={imagePreview} alt="preview" />
-          <button
-            className="image-preview-close"
-            onClick={() => setImagePreview(null)}
-          >
-            ✕
-          </button>
+  return (
+    <div className="input-wrapper">
+
+      {images.length > 0 && (
+        <div className="input-preview">
+          {images.map((img, index) => (
+            <div className="image-preview" key={index}>
+              <img src={img} alt={`preview-${index}`} />
+              <button
+                className="image-preview-close"
+                onClick={() =>
+                  setImages((prev) => prev.filter((_, i) => i !== index))
+                }
+              >
+                ✕
+              </button>
+            </div>
+          ))}
         </div>
+      )}
+
+
+      <div className="input-row">
+        <button className="attach-btn" onClick={handlePickImage}>
+          📎
+        </button>
+
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Введите сообщение..."
+          rows={1}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
+        />
+
+        <button onClick={handleSend} className="send-btn">
+          ➤
+        </button>
       </div>
-    )}
 
-    <div className="input-row">
-      <button className="attach-btn" onClick={handlePickImage}>
-        📎
-      </button>
 
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Введите сообщение..."
-        rows={1}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            handleSend();
-          }
-        }}
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        ref={fileInputRef}
+        onChange={handleImageChange}
+        hidden
       />
-
-      <button onClick={handleSend} className="send-btn">
-        ➤
-      </button>
     </div>
-
-    <input
-      type="file"
-      accept="image/*"
-      ref={fileInputRef}
-      onChange={handleImageChange}
-      hidden
-    />
-  </div>
-);
+  );
 }
