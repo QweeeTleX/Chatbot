@@ -21,7 +21,7 @@ function App() {
 
   const [deletedChat, setDeletedChat] = useState(null);
   const undoTimerRef = useRef(null);
-
+ 
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "dark";
   });
@@ -97,7 +97,7 @@ function App() {
     const { chat, index } = deletedChat;
     insertChatAt(chat, index);
 
-    // UX: возвращаем пользователя в восстановленный чат
+   
     setActiveChatId(chat.id);
 
     setDeletedChat(null);
