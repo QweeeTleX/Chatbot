@@ -1,9 +1,9 @@
-import {  useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import Message from "./Message";
 import Input from "./Input";
 import "../styles/chat.css";
 
-export default function Chat({ chatId, messages, onSend }) {
+export default function Chat({ chatId, messages, onSend, isStreaming, onStop }) {
   const somethingRef = useRef(null);
 
   const scrollPositions = useRef({});
@@ -59,7 +59,7 @@ export default function Chat({ chatId, messages, onSend }) {
         ))}
         
       </div>
-      <Input onSend={onSend} />
+      <Input onSend={onSend} isStreaming={isStreaming} onStop={onStop} />
     </div>
   );
 }

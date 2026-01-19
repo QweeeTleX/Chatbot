@@ -1,22 +1,17 @@
 import "../styles/message.css";
 
-export default function Message({ sender, type, content }) {
+export default function Message({ sender, type, content, pending, error }) {
+  const classes = ["message", sender, type];
+  if (pending) classes.push("pending");
+  if (error) classes.push("error");
+
   return (
-    <div className={`message ${sender} ${type}`}>
-
-      {type === "text" && (
-        <div className="message-text">{content}</div>
-      )}
-
+    <div className={classes.join(" ")}>
+      {type === "text" && <div className="message-text">{content}</div>}
 
       {type === "image" && (
-        <img
-          src={content}
-          alt="attachment"
-          className="message-image"
-        />
+        <img src={content} alt="attachment" className="message-image" />
       )}
-
 
       {type === "images" && (
         <div className="message-images">
@@ -33,7 +28,6 @@ export default function Message({ sender, type, content }) {
 
       {type === "mixed" && (
         <>
-
           {content.image && (
             <img
               src={content.image}
@@ -41,7 +35,6 @@ export default function Message({ sender, type, content }) {
               className="message-image"
             />
           )}
-
 
           {content.images && (
             <div className="message-images">
@@ -56,12 +49,7 @@ export default function Message({ sender, type, content }) {
             </div>
           )}
 
-
-          {content.text && (
-            <div className="message-text">
-              {content.text}
-            </div>
-          )}
+          {content.text && <div className="message-text">{content.text}</div>}
         </>
       )}
     </div>

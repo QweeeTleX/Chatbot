@@ -89,6 +89,7 @@
 
   font-size: 18px;
   line-height: 1;
+  color: inherit;
 }
 
 .send-btn {
@@ -110,9 +111,25 @@
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
+.send-btn.streaming {
+  background: linear-gradient(135deg, #f1636f, #d34e59);
+}
+
 .send-btn:hover {
   opacity: 0.9;
   transform: scale(1.05);
+}
+
+.send-btn:disabled {
+  opacity: 0.35;
+  transform: none;
+  cursor: not-allowed;
+}
+
+.attach-btn:disabled,
+.input-row textarea:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .app.dark .input-wrapper {

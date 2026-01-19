@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 
-const default_chats = [];
+export const DEFAULT_CHAT_NAME = "Новый чат";
+const defaultChats = [];
 
 export function useChats() {
   const [chats, setChats] = useState(() => {
     const saved = localStorage.getItem("chats");
     try {
       const parsed = saved ? JSON.parse(saved) : null;
-      return Array.isArray(parsed) && parsed.length ? parsed : default_chats;
+      return Array.isArray(parsed) && parsed.length ? parsed : defaultChats;
     } catch {
-      return default_chats;
+      return defaultChats;
     }
   });
 
- 
   const [activeChatId, setActiveChatId] = useState(() => {
     const saved = localStorage.getItem("activeChatId");
     const initial = saved && saved !== "null" ? saved : null;
@@ -40,7 +40,7 @@ export function useChats() {
       ...prev,
       {
         id: newId,
-        name: "Чат",
+        name: DEFAULT_CHAT_NAME,
         pinned: false,
         messages: [],
       },
@@ -49,45 +49,43 @@ export function useChats() {
     setActiveChatId(newId);
   };
 
-	const createChatAndGetId = () => {
-		const newId = crypto.randomUUID();
+  const createChatAndGetId = () => {
+    const newId = crypto.randomUUID();
 
-		setChats((prev) => [
-			...prev,
-			{
-				id: newId,
-				name: "Чат",
-				pinned: false,
-				messages: [],
-			},
-		]);
+    setChats((prev) => [
+      ...prev,
+      {
+        id: newId,
+        name: DEFAULT_CHAT_NAME,
+        pinned: false,
+        messages: [],
+      },
+    ]);
 
-		setActiveChatId(newId);
-		return newId;
-	};
+    setActiveChatId(newId);
+    return newId;
+  };
 
-	const createChatWithMessages = (messages) => {
-		const newId = crypto.randomUUID();
+  const createChatWithMessages = (messages) => {
+    const newId = crypto.randomUUID();
 
-		setChats((prev) => [
-			...prev,
-			{
-				id: newId,
-				name: "Чат",
-				pinned: false,
-				messages,
-			},
-		]);
+    setChats((prev) => [
+      ...prev,
+      {
+        id: newId,
+        name: DEFAULT_CHAT_NAME,
+        pinned: false,
+        messages,
+      },
+    ]);
 
-		setActiveChatId(newId);
-		return newId;
-	};
+    setActiveChatId(newId);
+    return newId;
+  };
 
   const renameChat = (chatId, name) => {
     setChats((prev) =>
-      prev.map((chat) =>
-        chat.id === chatId ? { ...chat, name } : chat
-      )
+      prev.map((chat) => (chat.id === chatId ? { ...chat, name } : chat))
     );
   };
 
@@ -135,17 +133,36 @@ export function useChats() {
     ]);
   };
 
+  const updateMessage = (chatId, messageId, updater) => {
+    setChats((prev) =>
+      prev.map((chat) => {
+        if (chat.id !== chatId) return chat;
+        return {
+          ...chat,
+          messages: chat.messages.map((msg) =>
+            msg.id === messageId
+              ? typeof updater === "function"
+                ? { ...msg, ...updater(msg) }
+                : { ...msg, ...updater }
+              : msg
+          ),
+        };
+      })
+    );
+  };
+
   return {
     chats,
     activeChatId,
     setActiveChatId,
     createChat,
-		createChatAndGetId,
-		createChatWithMessages,
+    createChatAndGetId,
+    createChatWithMessages,
     renameChat,
     togglePinChat,
     deleteChat,
     addMessage,
+    updateMessage,
     insertChatAt,
   };
 }

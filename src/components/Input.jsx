@@ -1,19 +1,23 @@
 import { useState, useRef } from "react";
 import "../styles/input.css";
 
-export default function Input({ onSend }) {
+export default function Input({ onSend, isStreaming = false, onStop }) {
   const [text, setText] = useState("");
   const [images, setImages] = useState([]);
 
   const fileInputRef = useRef(null);
 
   const MAX_IMAGES = 10;
+  const canSend = Boolean(text.trim()) || images.length > 0;
 
   const handlePickImage = () => {
+    if (isStreaming) return;
     fileInputRef.current?.click();
   };
 
   const handleImageChange = (e) => {
+    if (isStreaming) return;
+
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
@@ -77,9 +81,16 @@ export default function Input({ onSend }) {
     setImages([]);
   };
 
+  const handlePrimaryAction = () => {
+    if (isStreaming) {
+      onStop?.();
+      return;
+    }
+    handleSend();
+  };
+
   return (
     <div className="input-wrapper">
-
       {images.length > 0 && (
         <div className="input-preview">
           {images.map((img, index) => (
@@ -91,23 +102,28 @@ export default function Input({ onSend }) {
                   setImages((prev) => prev.filter((_, i) => i !== index))
                 }
               >
-                ✕
+                ×
               </button>
             </div>
           ))}
         </div>
       )}
 
-
       <div className="input-row">
-        <button className="attach-btn" onClick={handlePickImage}>
+        <button
+          className="attach-btn"
+          onClick={handlePickImage}
+          title="Прикрепить изображение"
+          disabled={isStreaming}
+        >
           📎
         </button>
 
         <textarea
           value={text}
+          disabled={isStreaming}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Введите сообщение..."
+          placeholder="Напишите сообщение..."
           rows={1}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
@@ -117,11 +133,15 @@ export default function Input({ onSend }) {
           }}
         />
 
-        <button onClick={handleSend} className="send-btn">
-          ➤
+        <button
+          onClick={handlePrimaryAction}
+          className={`send-btn ${isStreaming ? "streaming" : ""}`}
+          disabled={!isStreaming && !canSend}
+          title={isStreaming ? "Остановить стриминг" : "Отправить"}
+        >
+          {isStreaming ? "■" : "→"}
         </button>
       </div>
-
 
       <input
         type="file"
