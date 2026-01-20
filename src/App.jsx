@@ -294,72 +294,74 @@ function App() {
 
   return (
     <div className={`app ${theme}`}>
-      <Sidebar
-        chats={sortedChats}
-        activeChatId={activeChatId}
-        onSelectChat={handleSelectChat}
-        onCreateChat={handleNewChat}
-        onRenameChat={renameChat}
-        onTogglePinChat={togglePinChat}
-        onDeleteChat={deleteChat}
-        theme={theme}
-        onToggleTheme={() =>
-          setTheme((prev) => (prev === "dark" ? "light" : "dark"))
-        }
-        collapsed={isSidebarCollapsed}
-        onToggleCollapse={() => setIsSidebarCollapsed((v) => !v)}
-      />
+      <div className="classic-layout">
+        <Sidebar
+          chats={sortedChats}
+          activeChatId={activeChatId}
+          onSelectChat={handleSelectChat}
+          onCreateChat={handleNewChat}
+          onRenameChat={renameChat}
+          onTogglePinChat={togglePinChat}
+          onDeleteChat={deleteChat}
+          theme={theme}
+          onToggleTheme={() =>
+            setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+          }
+          collapsed={isSidebarCollapsed}
+          onToggleCollapse={() => setIsSidebarCollapsed((v) => !v)}
+        />
 
-      <div className="chat-area">
-        <div className="chat-shell">
-          <div className="chat-controls">
-            <div className="model-select">
-              <span className="control-label">Модель</span>
-              <select
-                value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
-                disabled={modelsLoading}
-              >
-                {models.map((model) => (
-                  <option key={model} value={model}>
-                    {model}
-                  </option>
-                ))}
-              </select>
-              {modelsLoading && (
-                <span className="control-note">Загружаем список…</span>
-              )}
-              {modelsError && (
-                <span className="control-error">{modelsError}</span>
-              )}
+        <div className="chat-area">
+          <div className="chat-shell">
+            <div className="chat-controls">
+              <div className="model-select">
+                <span className="control-label">Модель</span>
+                <select
+                  value={selectedModel}
+                  onChange={(e) => setSelectedModel(e.target.value)}
+                  disabled={modelsLoading}
+                >
+                  {models.map((model) => (
+                    <option key={model} value={model}>
+                      {model}
+                    </option>
+                  ))}
+                </select>
+                {modelsLoading && (
+                  <span className="control-note">Загружаем список…</span>
+                )}
+                {modelsError && (
+                  <span className="control-error">{modelsError}</span>
+                )}
+              </div>
+
+              <div className="control-actions">
+                {isStreaming ? (
+                  <button className="stop-btn" onClick={stopStreaming}>
+                    Остановить поток
+                  </button>
+                ) : (
+                  <span className="control-note">Готов отвечать</span>
+                )}
+              </div>
             </div>
 
-            <div className="control-actions">
-              {isStreaming ? (
-                <button className="stop-btn" onClick={stopStreaming}>
-                  Остановить поток
-                </button>
-              ) : (
-                <span className="control-note">Готов отвечать</span>
-              )}
-            </div>
+            {!activeChat || activeChat.messages.length === 0 ? (
+              <EmptyState
+                onSend={sendMessage}
+                isStreaming={isStreaming}
+                onStop={stopStreaming}
+              />
+            ) : (
+              <Chat
+                chatId={activeChatId}
+                messages={activeChat.messages}
+                onSend={sendMessage}
+                isStreaming={isStreaming}
+                onStop={stopStreaming}
+              />
+            )}
           </div>
-
-          {!activeChat || activeChat.messages.length === 0 ? (
-            <EmptyState
-              onSend={sendMessage}
-              isStreaming={isStreaming}
-              onStop={stopStreaming}
-            />
-          ) : (
-            <Chat
-              chatId={activeChatId}
-              messages={activeChat.messages}
-              onSend={sendMessage}
-              isStreaming={isStreaming}
-              onStop={stopStreaming}
-            />
-          )}
         </div>
       </div>
 

@@ -26,29 +26,29 @@ body {
 }
 
 .chat-area {
-	flex: 1;
-	display: flex;
-	min-height: 0;
+  flex: 1;
+  display: flex;
+  min-height: 0;
 
-	justify-content: center;
-	align-items: flex-start;
+  justify-content: center;
+  align-items: stretch;
 
-	padding-top: 0;
-	padding-bottom: 0;
+  padding: 0 12px;
 
-	background: transparent;
+  background: transparent;
 }
 
 .chat-shell {
   width: 100%;
   max-width: 1000px;
+
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 0;
-  padding-top: 0;
-}
 
+  flex: 1;        
+  min-height: 0;  
+}
 .chat-controls {
   display: flex;
   justify-content: space-between;
