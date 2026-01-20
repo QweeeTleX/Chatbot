@@ -1,0 +1,235 @@
+import Input from "./Input";
+import { renderMarkdown } from "../utils/markdown";
+
+export default function ModernView({
+  chats,
+  activeChatId,
+  onSelectChat,
+  onCreateChat,
+  onRenameChat,
+  onTogglePinChat,
+  onDeleteChat,
+  theme,
+  onToggleTheme,
+  models,
+  modelsLoading,
+  modelsError,
+  selectedModel,
+  onModelChange,
+  isStreaming,
+  onStop,
+  activeChat,
+  onSend,
+  undoToast,
+  onUndo,
+}) {
+  const sorted = [...chats].sort((a, b) => (a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1));
+  const active = sorted.find((c) => c.id === activeChatId);
+
+  return (
+    <div className={`modern-layout ${theme === "light" ? "light" : "dark"}`}>
+      <div className="modern-bg">
+        <div className="glass-blob blob1" />
+        <div className="glass-blob blob2" />
+        <div className="glass-blob blob3" />
+      </div>
+
+      <header className="modern-header glass">
+        <div className="brand">
+          <div className="brand-mark">◎</div>
+          <div>
+            <div className="brand-name">Chatbot x ChatMock</div>
+            <div className="brand-sub">Liquid Glass UI</div>
+          </div>
+        </div>
+
+        <div className="header-actions">
+          <button className="chip" onClick={onCreateChat}>
+            + Новый диалог
+          </button>
+          <button className="chip" onClick={onToggleTheme}>
+            Тема: {theme === "dark" ? "Dark" : "Light"}
+          </button>
+          <div className="chip model-chip">
+            <span>Модель</span>
+            <select
+              value={selectedModel}
+              onChange={(e) => onModelChange(e.target.value)}
+              disabled={modelsLoading}
+              className={theme === "light" ? "select-light" : ""}
+            >
+              {models.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+          </div>
+          {modelsLoading && <span className="chip subtle">Загружаем модели…</span>}
+          {modelsError && <span className="chip danger">{modelsError}</span>}
+          {isStreaming ? (
+            <button className="chip danger" onClick={onStop}>
+              ⏹ Стоп
+            </button>
+          ) : (
+            <span className="chip subtle">Готов отвечать</span>
+          )}
+        </div>
+      </header>
+
+      <div className="modern-grid">
+        <aside className="modern-sidebar glass">
+          <div className="sidebar-title">Диалоги</div>
+          <div className="chat-list">
+            {sorted.map((chat) => (
+              <div
+                key={chat.id}
+                className={`chat-pill ${chat.id === activeChatId ? "active" : ""}`}
+                onClick={() => onSelectChat(chat.id)}
+              >
+                <div className="chat-pill-header">
+                  <span className="chat-pill-name">{chat.name || "Без имени"}</span>
+                  <div className="chat-pill-actions">
+                    <button
+                      title="Пин"
+                      className={`pill-btn ${chat.pinned ? "accent" : ""}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onTogglePinChat(chat.id);
+                      }}
+                    >
+                      📌
+                    </button>
+                    <button
+                      title="Переименовать"
+                      className="pill-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const next = prompt("Новое имя", chat.name || "");
+                        if (next && next.trim()) onRenameChat(chat.id, next.trim());
+                      }}
+                    >
+                      ✏️
+                    </button>
+                    <button
+                      title="Удалить"
+                      className="pill-btn danger"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDeleteChat(chat.id);
+                      }}
+                    >
+                      ✖
+                    </button>
+                  </div>
+                </div>
+                <div className="chat-pill-sub">
+                  {chat.messages.length ? `${chat.messages.length} сообщений` : "Пусто"}
+                </div>
+              </div>
+            ))}
+          </div>
+        </aside>
+
+        <main className="modern-chat glass">
+          <div className="modern-chat-header">
+            <div>
+              <div className="chat-title">{active?.name || "Новый чат"}</div>
+              <div className="chat-sub">
+                {selectedModel} • {isStreaming ? "Стримим…" : "Готов"}
+              </div>
+            </div>
+            <div className="pulse-dot" aria-hidden />
+          </div>
+
+          <div className="modern-messages">
+            {!active || active.messages.length === 0 ? (
+              <div className="modern-empty">
+                <div className="orbit">
+                  <div className="planet" />
+                  <div className="satellite" />
+                </div>
+                <h3>Спроси что-нибудь</h3>
+                <p>ChatMock отвечает стримом. Названия чатов генерируются автоматически.</p>
+              </div>
+            ) : (
+              active.messages.map((msg) => (
+                <ModernMessage key={msg.id} {...msg} />
+              ))
+            )}
+          </div>
+
+          <div className="modern-input">
+            <Input onSend={onSend} isStreaming={isStreaming} onStop={onStop} />
+          </div>
+        </main>
+      </div>
+
+      {undoToast && (
+        <div className="modern-toast glass">
+          <span>Чат удален</span>
+          <button onClick={onUndo}>Отменить</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ModernMessage({ sender, type, content, pending, error }) {
+  const isUser = sender === "user";
+  const renderContent = () => {
+    if (type === "text") {
+      return (
+        <div
+          className="bubble-text"
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
+        />
+      );
+    }
+
+  return (
+    <div className={`modern-bubble ${isUser ? "user" : "bot"} ${pending ? "pending" : ""}`}>
+      if (type === "image") {
+        return <img src={content} alt="attachment" className="bubble-image" />;
+      }
+
+      if (type === "images" && Array.isArray(content)) {
+        return (
+          <div className="bubble-images">
+            {content.map((img, i) => (
+              <img key={i} src={img} alt={`attachment-${i}`} className="bubble-image" />
+            ))}
+          </div>
+        );
+      }
+
+      if (type === "mixed" && content) {
+        return (
+          <div className="bubble-mixed">
+            {content.text && (
+              <div
+                className="bubble-text"
+                dangerouslySetInnerHTML={{ __html: renderMarkdown(content.text) }}
+              />
+            )}
+            {content.image && (
+              <img src={content.image} alt="attachment" className="bubble-image" />
+            )}
+            {content.images &&
+              content.images.map((img, i) => (
+                <img key={i} src={img} alt={`attachment-${i}`} className="bubble-image" />
+              ))}
+          </div>
+        );
+      }
+
+      return null;
+    };
+
+      {renderContent()}
+      {pending && <span className="bubble-status">···</span>}
+      {error && <span className="bubble-status error">Ошибка</span>}
+    </div>
+  );
+}
+

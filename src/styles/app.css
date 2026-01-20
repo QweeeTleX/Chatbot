@@ -1,8 +1,10 @@
 .app {
 	display: flex;
+	flex-direction: column;
 	height: 100vh;
-
-	font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+	font-family: "SF Pro Display", "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow: hidden;
 }
 
 .app.dark {
@@ -24,16 +26,96 @@ body {
 }
 
 .chat-area {
-	flex: 1;
-	display: flex;
+  flex: 1;
+  display: flex;
+  min-height: 0;
 
-	justify-content: center;
-	align-items: stretch;
+  justify-content: center;
+  align-items: stretch;
 
-	padding-top: 24px;
-	padding-bottom: 24px;
+  padding: 0 12px;
 
-	background: transparent;
+  background: transparent;
+}
+
+.chat-shell {
+  width: 100%;
+  max-width: 1000px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  flex: 1;        
+  min-height: 0;  
+}
+.chat-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.app.light .chat-controls {
+  background: #f5f7fb;
+  border-color: #e6e9ef;
+}
+
+.model-select {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.model-select select {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #12141a;
+  color: #f4f4f4;
+}
+
+.app.light .model-select select {
+  background: #fff;
+  color: #111;
+  border-color: #cfd4dd;
+}
+
+.control-label {
+  font-size: 12px;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.control-note {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.control-error {
+  font-size: 12px;
+  color: #ff7a7a;
+}
+
+.control-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stop-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #f1636f, #d34e59);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
 }
 
 .undo-toast {
@@ -65,4 +147,32 @@ body {
 
 .undo-toast button:hover {
 	text-decoration: underline;
+}
+
+.ui-mode-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  display: flex;
+  gap: 8px;
+}
+.ui-mode-toggle button {
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.4);
+  color: #f7f7f7;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.ui-mode-toggle button.active {
+  background: linear-gradient(135deg, #7ef4d2, #6b8bff);
+  color: #0b1020;
+  border-color: transparent;
+}
+
+.classic-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
 }

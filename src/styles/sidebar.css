@@ -8,6 +8,7 @@
 	overflow-x: hidden;
 	overflow-y: hidden;
 	transition: width 0.25s ease;
+  border: 1px solid rgb(64, 56, 56);
 }
 
 .sidebar.collapsed {

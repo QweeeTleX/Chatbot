@@ -78,3 +78,32 @@
 .app.light .message.bot {
   color: #222;
 }
+
+.message.pending .message-text {
+  position: relative;
+  opacity: 0.9;
+}
+
+.message.pending .message-text::after {
+  content: "";
+  position: absolute;
+  right: -14px;
+  bottom: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6e8bff;
+  animation: blink 1s infinite;
+}
+
+.message.error .message-text {
+  border: 1px solid rgba(255, 99, 99, 0.4);
+  background: rgba(255, 99, 99, 0.08);
+  color: #ff7a7a;
+}
+
+@keyframes blink {
+  0% { opacity: 0.15; }
+  50% { opacity: 1; }
+  100% { opacity: 0.15; }
+}
