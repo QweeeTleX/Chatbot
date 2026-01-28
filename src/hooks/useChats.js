@@ -4,11 +4,22 @@ export const DEFAULT_CHAT_NAME = "Новый чат";
 const defaultChats = [];
 
 export function useChats() {
+  const normalizeChats = (list) =>
+    list.map((chat) => {
+      const fallbackCreatedAt =
+        chat.messages && chat.messages.length
+          ? chat.messages[0]?.timestamp || Date.now()
+          : Date.now();
+      return chat.createdAt ? chat : { ...chat, createdAt: fallbackCreatedAt };
+    });
+
   const [chats, setChats] = useState(() => {
     const saved = localStorage.getItem("chats");
     try {
       const parsed = saved ? JSON.parse(saved) : null;
-      return Array.isArray(parsed) && parsed.length ? parsed : defaultChats;
+      return Array.isArray(parsed) && parsed.length
+        ? normalizeChats(parsed)
+        : defaultChats;
     } catch {
       return defaultChats;
     }
@@ -43,6 +54,7 @@ export function useChats() {
         name: DEFAULT_CHAT_NAME,
         pinned: false,
         messages: [],
+        createdAt: Date.now(),
       },
     ]);
 
@@ -59,6 +71,7 @@ export function useChats() {
         name: DEFAULT_CHAT_NAME,
         pinned: false,
         messages: [],
+        createdAt: Date.now(),
       },
     ]);
 
@@ -76,6 +89,10 @@ export function useChats() {
         name: DEFAULT_CHAT_NAME,
         pinned: false,
         messages,
+        createdAt:
+          messages && messages.length
+            ? messages[0]?.timestamp || Date.now()
+            : Date.now(),
       },
     ]);
 

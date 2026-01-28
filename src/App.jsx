@@ -292,8 +292,12 @@ function App() {
   };
 
   const sortedChats = [...chats].sort((a, b) => {
-    if (a.pinned === b.pinned) return 0;
-    return a.pinned ? -1 : 1;
+    if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+    const aTime =
+      a.createdAt || (a.messages && a.messages[0]?.timestamp) || 0;
+    const bTime =
+      b.createdAt || (b.messages && b.messages[0]?.timestamp) || 0;
+    return bTime - aTime;
   });
 
   return (
@@ -307,10 +311,6 @@ function App() {
           onRenameChat={renameChat}
           onTogglePinChat={togglePinChat}
           onDeleteChat={deleteChat}
-          theme={theme}
-          onToggleTheme={() =>
-            setTheme((prev) => (prev === "dark" ? "light" : "dark"))
-          }
           collapsed={isSidebarCollapsed}
           onToggleCollapse={() => setIsSidebarCollapsed((v) => !v)}
         />

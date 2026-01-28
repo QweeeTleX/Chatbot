@@ -9,13 +9,53 @@ export default function Sidebar({
   onRenameChat,
   onTogglePinChat,
   onDeleteChat,
-  theme,
-  onToggleTheme,
   collapsed,
   onToggleCollapse,
 }) {
   const [editingChatId, setEditingChatId] = useState(null);
   const [editingTitle, setEditingTitle] = useState("");
+
+  const getChatTimestamp = (chat) =>
+    chat.createdAt ||
+    (chat.messages && chat.messages.length ? chat.messages[0]?.timestamp : 0) ||
+    Date.now();
+
+  const getDayKey = (ts) => {
+    const date = new Date(ts);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  };
+
+  const formatDayLabel = (ts) => {
+    const date = new Date(ts);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    const dayKey = getDayKey(ts);
+    if (dayKey === today.getTime()) return "Сегодня";
+    if (dayKey === yesterday.getTime()) return "Вчера";
+
+    const withYear = date.getFullYear() !== today.getFullYear();
+    return new Intl.DateTimeFormat("ru-RU", {
+      day: "numeric",
+      month: "long",
+      ...(withYear ? { year: "numeric" } : {}),
+    }).format(date);
+  };
+
+  const chatItems = [];
+  let lastDayKey = null;
+  chats.forEach((chat) => {
+    const ts = getChatTimestamp(chat);
+    const dayKey = getDayKey(ts);
+    if (dayKey !== lastDayKey) {
+      chatItems.push({ type: "label", key: `label-${dayKey}`, text: formatDayLabel(ts) });
+      lastDayKey = dayKey;
+    }
+    chatItems.push({ type: "chat", key: chat.id, chat });
+  });
 
   const saveTitle = (chatId) => {
     const trimmed = editingTitle.trim();
@@ -41,9 +81,6 @@ export default function Sidebar({
       {!collapsed && (
         <div className="sidebar-header">
           <h2>Чаты</h2>
-          <button className="theme-toggle" onClick={onToggleTheme}>
-            {theme === "dark" ? "🌙" : "☀️"}
-          </button>
         </div>
       )}
 
@@ -56,66 +93,79 @@ export default function Sidebar({
 
       {!collapsed && (
         <ul>
-          {chats.map((chat) => (
-            <li
-              key={chat.id}
-              className={`chat-item 
-                ${chat.id === activeChatId ? "active" : ""}
-                ${chat.pinned ? "pinned" : ""}
-              `}
-              onClick={() => onSelectChat(chat.id)}
-            >
-              {editingChatId === chat.id ? (
-                <input
-                  className="chat-title-input"
-                  value={editingTitle}
-                  onChange={(e) => setEditingTitle(e.target.value)}
-                  onClick={(e) => e.stopPropagation()}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") saveTitle(chat.id);
-                  }}
-                  onBlur={() => saveTitle(chat.id)}
-                />
-              ) : (
-                <span className="chat-title">{chat.name}</span>
-              )}
+          {chatItems.map((item) => {
+            if (item.type === "label") {
+              return (
+                <li key={item.key} className="chat-date">
+                  {item.text}
+                </li>
+              );
+            }
 
-              <div className="chat-actions">
-                <span
-                  className="chat-action"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setEditingChatId(chat.id);
-                    setEditingTitle(chat.name);
-                  }}
-                >
-                  ✏️
-                </span>
+            const chat = item.chat;
+            return (
+              <li
+                key={item.key}
+                className={`chat-item 
+                  ${chat.id === activeChatId ? "active" : ""}
+                  ${chat.pinned ? "pinned" : ""}
+                `}
+                onClick={() => onSelectChat(chat.id)}
+              >
+                {editingChatId === chat.id ? (
+                  <input
+                    className="chat-title-input"
+                    value={editingTitle}
+                    onChange={(e) => setEditingTitle(e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") saveTitle(chat.id);
+                    }}
+                    onBlur={() => saveTitle(chat.id)}
+                  />
+                ) : (
+                  <span className="chat-title">{chat.name}</span>
+                )}
 
-                <span
-                  className="chat-action"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onTogglePinChat(chat.id);
-                  }}
-                >
-                  {chat.pinned ? "📌" : "📍"}
-                </span>
+                <div className="chat-actions">
+                  <span
+                    className="chat-action"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditingChatId(chat.id);
+                      setEditingTitle(chat.name);
+                    }}
+                  >
+                    ✏️
+                  </span>
 
-                <span
-                  className="chat-action danger"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDeleteChat(chat.id);
-                  }}
-                >
-                  🗑️
-                </span>
-              </div>
-            </li>
-          ))}
-        </ul>
+                  <span
+                    className="chat-action"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onTogglePinChat(chat.id);
+                    }}
+                  >
+                    {chat.pinned ? "📌" : "📍"}
+                  </span>
+
+                  <span
+                    className="chat-action danger"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteChat(chat.id);
+                    }}
+                  >
+                    🗑️
+                  </span>
+                </div>
+              </li>
+            );
+          })}</ul>
       )}
     </div>
   );
 }
+
+
+
