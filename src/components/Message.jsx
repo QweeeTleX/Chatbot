@@ -1,4 +1,5 @@
 import "../styles/message.css";
+import { renderMarkdown } from "../utils/markdown";
 
 export default function Message({ sender, type, content, pending, error }) {
   const classes = ["message", sender, type];
@@ -7,7 +8,12 @@ export default function Message({ sender, type, content, pending, error }) {
 
   return (
     <div className={classes.join(" ")}>
-      {type === "text" && <div className="message-text">{content}</div>}
+      {type === "text" && (
+        <div
+          className="message-text"
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
+        />
+      )}
 
       {type === "image" && (
         <img src={content} alt="attachment" className="message-image" />
@@ -49,7 +55,12 @@ export default function Message({ sender, type, content, pending, error }) {
             </div>
           )}
 
-          {content.text && <div className="message-text">{content.text}</div>}
+          {content.text && (
+            <div
+              className="message-text"
+              dangerouslySetInnerHTML={{ __html: renderMarkdown(content.text) }}
+            />
+          )}
         </>
       )}
     </div>

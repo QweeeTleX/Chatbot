@@ -41,6 +41,8 @@ function App() {
   const [selectedModel, setSelectedModel] = useState(
     chatMockDefaults.fallbackModel
   );
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsTab, setSettingsTab] = useState("general");
 
   const [streamState, setStreamState] = useState({
     status: "idle",
@@ -250,6 +252,8 @@ function App() {
     setActiveChatId(null);
   };
 
+  const closeSettings = () => setSettingsOpen(false);
+
   const deleteChat = (chatId) => {
     if (isStreaming && chatId === activeChatId) {
       stopStreaming();
@@ -293,7 +297,7 @@ function App() {
   });
 
   return (
-    <div className={`app ${theme}`}>
+    <div className={`app ${theme} ${settingsOpen ? "settings-open" : ""}`}>
       <div className="classic-layout">
         <Sidebar
           chats={sortedChats}
@@ -327,6 +331,16 @@ function App() {
                     </option>
                   ))}
                 </select>
+                <button
+                  className="settings-btn"
+                  onClick={() => setSettingsOpen(true)}
+                  title="Настройки"
+                  type="button"
+                >
+                  <span className="settings-gear" aria-hidden>
+                    ⚙
+                  </span>
+                </button>
                 {modelsLoading && (
                   <span className="control-note">Загружаем список…</span>
                 )}
@@ -373,6 +387,87 @@ function App() {
       )}
 
       <Footer />
+
+      {settingsOpen && (
+        <div className="settings-overlay" onClick={closeSettings}>
+          <div
+            className="settings-modal"
+            role="dialog"
+            aria-modal="true"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="settings-side">
+              <button className="settings-close" onClick={closeSettings} type="button">
+                ✕
+              </button>
+              <div className="settings-nav">
+                <button
+                  className={`settings-item ${settingsTab === "account" ? "active" : ""}`}
+                  onClick={() => setSettingsTab("account")}
+                  type="button"
+                >
+                  Учетная запись
+                </button>
+                <button
+                  className={`settings-item ${settingsTab === "general" ? "active" : ""}`}
+                  onClick={() => setSettingsTab("general")}
+                  type="button"
+                >
+                  Общее
+                </button>
+                <button
+                  className={`settings-item ${settingsTab === "notifications" ? "active" : ""}`}
+                  onClick={() => setSettingsTab("notifications")}
+                  type="button"
+                >
+                  Уведомления
+                </button>
+              </div>
+            </div>
+            <div className="settings-content">
+              {settingsTab === "general" && (
+                <>
+                  <h3>Общее</h3>
+                  <div className="settings-row">
+                    <div>
+                      <div className="settings-label">Тема</div>
+                      <div className="settings-muted">Переключить светлую/темную</div>
+                    </div>
+                    <button
+                      className="theme-icon-btn"
+                      onClick={() =>
+                        setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+                      }
+                      type="button"
+                      title="Сменить тему"
+                    >
+                      {theme === "dark" ? "🌙" : "☀️"}
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {settingsTab === "account" && (
+                <>
+                  <h3>Учетная запись</h3>
+                  <div className="settings-placeholder">
+                    Раздел будет доступен позже.
+                  </div>
+                </>
+              )}
+
+              {settingsTab === "notifications" && (
+                <>
+                  <h3>Уведомления</h3>
+                  <div className="settings-placeholder">
+                    Настройки уведомлений появятся позже.
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

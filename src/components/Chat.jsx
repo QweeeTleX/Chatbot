@@ -51,6 +51,7 @@ export default function Chat({ chatId, messages, onSend, isStreaming, onStop }) 
   }, [messages, chatId]);
 
 
+
   return (
     <div className="chat">
       <div onScroll={handleScroll} ref={somethingRef} className="messages">

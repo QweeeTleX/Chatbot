@@ -79,10 +79,44 @@ body {
   color: #f4f4f4;
 }
 
+.settings-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f2f2f2;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.settings-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(126, 244, 210, 0.6);
+}
+.settings-btn:active {
+  transform: translateY(0);
+}
+.settings-gear {
+  font-size: 16px;
+  line-height: 1;
+}
+
 .app.light .model-select select {
   background: #fff;
   color: #111;
   border-color: #cfd4dd;
+}
+.app.light .settings-btn {
+  background: #fff;
+  color: #2b2f36;
+  border-color: #cfd4dd;
+}
+.app.light .settings-btn:hover {
+  background: #f1f4f9;
+  border-color: #8eb3ff;
 }
 
 .control-label {
@@ -147,6 +181,161 @@ body {
 
 .undo-toast button:hover {
 	text-decoration: underline;
+}
+
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 12, 16, 0.35);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.settings-modal {
+  width: min(860px, 90vw);
+  min-height: 420px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(22, 24, 30, 0.95);
+  color: #e9edf4;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.settings-side {
+  padding: 18px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-close {
+  align-self: flex-start;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  cursor: pointer;
+}
+
+.settings-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-item {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.settings-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.settings-item.active {
+  background: rgba(126, 244, 210, 0.14);
+  border-color: rgba(126, 244, 210, 0.4);
+}
+
+.settings-content {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.settings-content h3 {
+  margin: 0;
+  font-size: 18px;
+}
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.settings-label {
+  font-weight: 600;
+}
+.settings-muted {
+  font-size: 12px;
+  opacity: 0.75;
+}
+.theme-icon-btn {
+  width: 44px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.settings-placeholder {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.app.light .settings-overlay {
+  background: rgba(120, 130, 150, 0.22);
+}
+.app.light .settings-modal {
+  background: rgba(255, 255, 255, 0.95);
+  color: #111827;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+.app.light .settings-side {
+  border-right-color: rgba(0, 0, 0, 0.06);
+  background: rgba(0, 0, 0, 0.02);
+}
+.app.light .settings-row {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+.app.light .settings-item.active {
+  background: rgba(142, 179, 255, 0.2);
+  border-color: rgba(142, 179, 255, 0.5);
+}
+.app.light .settings-placeholder {
+  border-color: rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.app.settings-open .classic-layout,
+.app.settings-open .undo-toast,
+.app.settings-open .app-footer,
+.app.settings-open .ui-mode-toggle {
+  filter: blur(2px);
+}
+
+@media (max-width: 860px) {
+  .settings-modal {
+    grid-template-columns: 1fr;
+  }
+  .settings-side {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
 }
 
 .ui-mode-toggle {

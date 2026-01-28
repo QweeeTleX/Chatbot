@@ -102,6 +102,71 @@
   color: #ff7a7a;
 }
 
+.message-text p {
+  margin: 0 0 0.6em;
+}
+
+.message-text p:last-child {
+  margin-bottom: 0;
+}
+
+.message-text strong {
+  font-weight: 700;
+}
+
+.message-text em {
+  font-style: italic;
+}
+
+.message-text code {
+  font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.95em;
+  padding: 0.1em 0.3em;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.app.light .message-text code {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.message-text pre {
+  margin: 0.6em 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  overflow-x: auto;
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.message-text pre code {
+  padding: 0;
+  background: transparent;
+  display: block;
+  font-size: 0.92em;
+  line-height: 1.5;
+}
+
+.app.light .message-text pre {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.message-text a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.message-text ul {
+  margin: 0.4em 0 0.6em 1.2em;
+  padding: 0;
+}
+
+.message-text li {
+  margin: 0.2em 0;
+}
+
 @keyframes blink {
   0% { opacity: 0.15; }
   50% { opacity: 1; }
