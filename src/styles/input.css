@@ -83,24 +83,41 @@
 }
 
 .attach-btn {
-  background: none;
-  border: none;
+  width: 28px;
+  height: 28px;
+
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50%;
   cursor: pointer;
 
   font-size: 18px;
+  font-weight: 600;
   line-height: 1;
   color: inherit;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform 0.15s ease, opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.attach-icon {
+  display: block;
 }
 
 .send-btn {
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
 
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 50%;
 
-  background: linear-gradient(135deg, #5a5597, #433c75);
-  color: white;
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  font-size: 15px;
+  font-weight: 700;
 
   cursor: pointer;
 
@@ -109,15 +126,28 @@
   justify-content: center;
 
   transition: transform 0.15s ease, opacity 0.15s ease;
+  line-height: 1;
+}
+
+.send-icon {
+  display: block;
 }
 
 .send-btn.streaming {
-  background: linear-gradient(135deg, #f1636f, #d34e59);
+  border-color: rgba(241, 99, 111, 0.5);
+  background: rgba(241, 99, 111, 0.12);
+  color: #f1636f;
 }
 
 .send-btn:hover {
-  opacity: 0.9;
-  transform: scale(1.05);
+  opacity: 0.95;
+  transform: scale(1.03);
+}
+
+.attach-btn:hover {
+  opacity: 0.95;
+  transform: scale(1.03);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .send-btn:disabled {
@@ -151,6 +181,18 @@
   color: #111;
 }
 
-.app.light .send-btn {
-  background: linear-gradient(135deg, #6d6ae6, #514dcf);
+.app.light .send-btn:not(.streaming) {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.04);
+  color: #111;
+}
+
+.app.light .attach-btn:hover {
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.app.dark .send-btn:not(.streaming) {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
 }

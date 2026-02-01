@@ -22,6 +22,11 @@ export function renderMarkdown(text = "") {
     stashCodeBlock(lang, code)
   );
 
+  out = out.replace(
+    /(^|\n)`([\w-]+)?[ \t]*\r?\n([\s\S]*?)\n`(?=\n|$)/g,
+    (_, start = "", lang = "", code = "") => `${start}${stashCodeBlock(lang, code)}`
+  );
+
   out = out.replace(/(?:^|\n)((?:[ \t]{4,}.*(?:\r?\n|$))+)/g, (match, block) => {
     const code = block
       .replace(/^\n/, "")

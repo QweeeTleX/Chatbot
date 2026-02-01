@@ -116,7 +116,22 @@ export default function Input({ onSend, isStreaming = false, onStop }) {
           title="Прикрепить изображение"
           disabled={isStreaming}
         >
-          📎
+          <svg
+            className="attach-icon"
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              d="M12 5v14M5 12h14"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+            />
+          </svg>
         </button>
 
         <textarea
@@ -137,9 +152,31 @@ export default function Input({ onSend, isStreaming = false, onStop }) {
           onClick={handlePrimaryAction}
           className={`send-btn ${isStreaming ? "streaming" : ""}`}
           disabled={!isStreaming && !canSend}
-          title={isStreaming ? "Остановить стриминг" : "Отправить"}
+          title={
+            isStreaming
+              ? "\u041E\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C \u0441\u0442\u0440\u0438\u043C\u0438\u043D\u0433"
+              : "\u041E\u0442\u043F\u0440\u0430\u0432\u0438\u0442\u044C"
+          }
         >
-          {isStreaming ? "■" : "→"}
+          {isStreaming ? ("\u25A0") : (
+            <svg
+              className="send-icon"
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M12 19V5M12 5l-5 5M12 5l5 5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
         </button>
       </div>
 

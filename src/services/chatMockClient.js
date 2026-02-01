@@ -92,6 +92,13 @@ const toApiMessages = (history) =>
     content: buildContentForApi(msg),
   }));
 
+const stripThinkTags = (text) => {
+  if (!text) return "";
+  const withoutBlocks = text.replace(/<think[\s\S]*?<\/think>/gi, "");
+  const withoutTags = withoutBlocks.replace(/<\/?think[^>]*>/gi, "");
+  return withoutTags.replace(/\s+/g, " ").trim();
+};
+
 export const fetchChatMockModels = async () => {
   const res = await fetch(`${API_BASE}/models`, {
     method: "GET",
@@ -306,5 +313,8 @@ export const requestChatTitle = async ({ model, history, timeoutMs = 12000 }) =>
   const data = await res.json();
   const content = data?.choices?.[0]?.message?.content;
   const text = normalizeContentPart(content);
-  return text ? text.trim().replace(/^["'«»]+|["'«»]+$/g, "") : null;
+  const cleaned = stripThinkTags(text);
+  return cleaned
+    ? cleaned.trim().replace(/^["'«»]+|["'«»]+$/g, "")
+    : null;
 };
