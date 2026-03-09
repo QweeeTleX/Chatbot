@@ -17,8 +17,7 @@ export default function Sidebar({
 
   const getChatTimestamp = (chat) =>
     chat.createdAt ||
-    (chat.messages && chat.messages.length ? chat.messages[0]?.timestamp : 0) ||
-    Date.now();
+    (chat.messages && chat.messages.length ? chat.messages[0]?.timestamp : 0);
 
   const getDayKey = (ts) => {
     const date = new Date(ts);
