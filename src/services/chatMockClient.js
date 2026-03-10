@@ -155,7 +155,9 @@ export const streamChatMockCompletion = async ({
           if (signal && !signal.aborted && reader?.cancel) {
             reader.cancel("timeout");
           }
-        } catch {}
+        } catch {
+          // ignore cancellation errors
+        }
       }, timeoutMs)
     : null;
 
@@ -172,7 +174,7 @@ export const streamChatMockCompletion = async ({
     let readResult;
     try {
       readResult = await reader.read();
-    } catch (err) {
+    } catch  {
       break;
     }
 
@@ -273,7 +275,7 @@ export const streamChatMockCompletion = async ({
   return full;
 };
 
-export const requestChatTitle = async ({ model, history, timeoutMs = 12000 }) => {
+export const requestChatTitle = async ({ history, timeoutMs = 12000 }) => {
   const prompt =
     "Ты генератор названий чатов. Используй только контекст сообщений ниже, выбери одно короткое (до 6 слов) нейтральное название на русском. Не используй кавычки, имена, почты, ссылки или личные данные. Ответь только названием без пояснений.";
 
@@ -293,7 +295,9 @@ export const requestChatTitle = async ({ model, history, timeoutMs = 12000 }) =>
     ? setTimeout(() => {
         try {
           controller.abort("title-timeout");
-        } catch {}
+        } catch {
+          // ignore cancellation errors
+        }
       }, timeoutMs)
     : null;
 

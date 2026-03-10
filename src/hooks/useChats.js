@@ -44,40 +44,6 @@ export function useChats() {
     localStorage.setItem("activeChatId", activeChatId ?? "null");
   }, [activeChatId]);
 
-  const createChat = () => {
-    const newId = crypto.randomUUID();
-
-    setChats((prev) => [
-      ...prev,
-      {
-        id: newId,
-        name: DEFAULT_CHAT_NAME,
-        pinned: false,
-        messages: [],
-        createdAt: Date.now(),
-      },
-    ]);
-
-    setActiveChatId(newId);
-  };
-
-  const createChatAndGetId = () => {
-    const newId = crypto.randomUUID();
-
-    setChats((prev) => [
-      ...prev,
-      {
-        id: newId,
-        name: DEFAULT_CHAT_NAME,
-        pinned: false,
-        messages: [],
-        createdAt: Date.now(),
-      },
-    ]);
-
-    setActiveChatId(newId);
-    return newId;
-  };
 
   const createChatWithMessages = (messages) => {
     const newId = crypto.randomUUID();
@@ -172,8 +138,6 @@ export function useChats() {
     chats,
     activeChatId,
     setActiveChatId,
-    createChat,
-    createChatAndGetId,
     createChatWithMessages,
     renameChat,
     togglePinChat,

@@ -50,7 +50,6 @@ export function useChatFlow({
 
     try {
       const generatedTitle = await requestChatTitle({
-        model: "gpt-5",
         history,
         timeoutMs,
       });
