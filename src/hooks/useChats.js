@@ -10,13 +10,18 @@ export function useChats() {
         chat.messages && chat.messages.length
           ? chat.messages[0]?.timestamp || Date.now()
           : Date.now();
-      return chat.createdAt ? chat : { ...chat, createdAt: fallbackCreatedAt };
+
+      return chat.createdAt
+        ? chat
+        : { ...chat, createdAt: fallbackCreatedAt };    
     });
 
   const [chats, setChats] = useState(() => {
     const saved = localStorage.getItem("chats");
+
     try {
       const parsed = saved ? JSON.parse(saved) : null;
+
       return Array.isArray(parsed) && parsed.length
         ? normalizeChats(parsed)
         : defaultChats;
@@ -44,7 +49,6 @@ export function useChats() {
     localStorage.setItem("activeChatId", activeChatId ?? "null");
   }, [activeChatId]);
 
-
   const createChatWithMessages = (messages) => {
     const newId = crypto.randomUUID();
 
@@ -68,14 +72,14 @@ export function useChats() {
 
   const renameChat = (chatId, name) => {
     setChats((prev) =>
-      prev.map((chat) => (chat.id === chatId ? { ...chat, name } : chat))
+      prev.map((chat) => (chat.id === chatId ? {...chat, name } : chat))
     );
   };
 
   const togglePinChat = (chatId) => {
     setChats((prev) =>
       prev.map((chat) =>
-        chat.id === chatId ? { ...chat, pinned: !chat.pinned } : chat
+        chat.id === chatId ? {...chat, pinned: !chat.pinned } : chat
       )
     );
   };
@@ -100,7 +104,7 @@ export function useChats() {
 
   const addMessage = (chatId, message) => {
     setChats((prev) =>
-      prev.map((chat) =>
+      prev.map((chat) => 
         chat.id === chatId
           ? { ...chat, messages: [...chat.messages, message] }
           : chat
@@ -120,6 +124,7 @@ export function useChats() {
     setChats((prev) =>
       prev.map((chat) => {
         if (chat.id !== chatId) return chat;
+
         return {
           ...chat,
           messages: chat.messages.map((msg) =>

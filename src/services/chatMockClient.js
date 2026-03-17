@@ -1,4 +1,4 @@
-import { chatMockCredentials, chatMockDefaults } from "../config/credentials";
+﻿import { chatMockCredentials, chatMockDefaults } from "../config/credentials";
 
 const API_BASE = `${chatMockCredentials.baseUrl?.replace(/\/+$/, "") || "http://127.0.0.1:8000"}/v1`;
 
@@ -110,7 +110,9 @@ export const fetchChatMockModels = async () => {
   }
 
   const data = await res.json();
+
   const raw = Array.isArray(data?.data) ? data.data : [];
+
   const models = raw
     .map((m) => m?.id)
     .filter(Boolean)
@@ -166,113 +168,112 @@ export const streamChatMockCompletion = async ({
   let inThink = false;
   let placeholderShown = false;
 
-  while (true) {
-    if (signal?.aborted) {
-      throw new Error("stream aborted");
-    }
+  try {
+    while (true) {
+      if (signal?.aborted) {
+        throw new Error("stream aborted");
+      }
 
-    let readResult;
-    try {
-      readResult = await reader.read();
-    } catch  {
-      break;
-    }
+      let readResult;
+      try {
+        readResult = await reader.read();
+      } catch {
+        break;
+      }
 
-    const { value, done } = readResult;
-    buffer += textDecoder.decode(value || new Uint8Array(), { stream: !done });
+      const { value, done } = readResult;
+      buffer += textDecoder.decode(value || new Uint8Array(), { stream: !done });
 
-    const segments = buffer.split("\n\n");
-    buffer = segments.pop() || "";
+      const segments = buffer.split("\n\n");
+      buffer = segments.pop() || "";
 
-    for (const segment of segments) {
-      const lines = segment.split("\n").filter(Boolean);
-      for (const line of lines) {
-        const trimmed = line.replace(/^data:\s*/, "");
-        if (!trimmed) continue;
-        if (trimmed === "[DONE]") {
-          return full;
-        }
+      for (const segment of segments) {
+        const lines = segment.split("\n").filter(Boolean);
 
-        let parsed;
-        try {
-          parsed = JSON.parse(trimmed);
-        } catch (err) {
-          console.error("Failed to parse ChatMock chunk", err, trimmed);
-          continue;
-        }
+        for (const line of lines) {
+          const trimmed = line.replace(/^data:\s*/, "");
+          if (!trimmed) continue;
+          if (trimmed === "[DONE]") {
+            return full;
+          }
 
-        if (parsed?.error) {
-          const msg = parsed.error?.message || "Unknown ChatMock error";
-          throw new Error(msg);
-        }
-
-        const delta = parsed?.choices?.[0]?.delta;
-        if (!delta) continue;
-        const rawPart = delta.content ?? delta.reasoning_content;
-        const content = normalizeContentPart(rawPart);
-        if (!content) continue;
-
-        let cursor = 0;
-        while (cursor < content.length) {
-          if (inThink) {
-            const closeIdx = content.indexOf("</think>", cursor);
-            if (closeIdx === -1) {
-              // still reasoning, skip chunk but show placeholder once
-              if (!placeholderShown) {
-                onToken?.({ type: "set", text: "Думаю..." });
-                placeholderShown = true;
-              }
-              cursor = content.length;
-              break;
-            }
-            // closing tag found
-            inThink = false;
-            cursor = closeIdx + "</think>".length;
-            if (placeholderShown) {
-              onToken?.({ type: "set", text: "" });
-              placeholderShown = false;
-            }
-            // continue to process the remainder after </think>
+          let parsed;
+          try {
+            parsed = JSON.parse(trimmed);
+          } catch (err) {
+            console.error("Failed to parse ChatMock chunk", err, trimmed);
             continue;
           }
 
-          const openIdx = content.indexOf("<think", cursor);
-          if (openIdx === -1) {
-            const chunkText = content.slice(cursor);
-            if (chunkText.trim()) {
-              const piece = full ? chunkText : chunkText.replace(/^\s+/, "");
+          if (parsed?.error) {
+            const msg = parsed.error?.message || "Unknown ChatMock error";
+            throw new Error(msg);
+          }
+
+          const delta = parsed?.choices?.[0]?.delta;
+          if (!delta) continue;
+          const rawPart = delta.content ?? delta.reasoning_content;
+          const content = normalizeContentPart(rawPart);
+          if (!content) continue;
+
+          let cursor = 0;
+          while (cursor < content.length) {
+            if (inThink) {
+              const closeIdx = content.indexOf("</think>", cursor);
+              if (closeIdx === -1) {
+                if (!placeholderShown) {
+                  onToken?.({ type: "set", text: "Думаю..." });
+                  placeholderShown = true;
+                }
+                cursor = content.length;
+                break;
+              }
+
+              inThink = false;
+              cursor = closeIdx + "</think>".length;
+              if (placeholderShown) {
+                onToken?.({ type: "set", text: "" });
+                placeholderShown = false;
+              }
+              continue;
+            }
+
+            const openIdx = content.indexOf("<think", cursor);
+            if (openIdx === -1) {
+              const chunkText = content.slice(cursor);
+              if (chunkText.trim()) {
+                const piece = full ? chunkText : chunkText.replace(/^\s+/, "");
+                full += piece;
+                onToken?.({ type: "append", text: piece });
+              }
+              break;
+            }
+
+            const before = content.slice(cursor, openIdx);
+            if (before.trim()) {
+              const piece = full ? before : before.replace(/^\s+/, "");
               full += piece;
               onToken?.({ type: "append", text: piece });
             }
-            break;
-          }
 
-          // text before <think>
-          const before = content.slice(cursor, openIdx);
-          if (before.trim()) {
-            const piece = full ? before : before.replace(/^\s+/, "");
-            full += piece;
-            onToken?.({ type: "append", text: piece });
-          }
-
-          // enter think
-          const closeTagStart = content.indexOf(">", openIdx);
-          inThink = true;
-          cursor = closeTagStart === -1 ? content.length : closeTagStart + 1;
-          if (!placeholderShown) {
-            onToken?.({ type: "set", text: "Думаю..." });
-            placeholderShown = true;
+            const closeTagStart = content.indexOf(">", openIdx);
+            inThink = true;
+            cursor = closeTagStart === -1 ? content.length : closeTagStart + 1;
+            if (!placeholderShown) {
+              onToken?.({ type: "set", text: "Думаю..." });
+              placeholderShown = true;
+            }
           }
         }
       }
+
+      if (done) break;
     }
 
-    if (done) break;
+    return full;
+  } finally {
+    if (timer) clearTimeout(timer);
   }
-
-  if (timer) clearTimeout(timer);
-
-  return full;
 };
 
 export const requestChatTitle = async ({ history, timeoutMs = 12000 }) => {

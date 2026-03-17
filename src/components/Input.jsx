@@ -152,13 +152,11 @@ export default function Input({ onSend, isStreaming = false, onStop }) {
           onClick={handlePrimaryAction}
           className={`send-btn ${isStreaming ? "streaming" : ""}`}
           disabled={!isStreaming && !canSend}
-          title={
-            isStreaming
-              ? "\u041E\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C \u0441\u0442\u0440\u0438\u043C\u0438\u043D\u0433"
-              : "\u041E\u0442\u043F\u0440\u0430\u0432\u0438\u0442\u044C"
-          }
+          title={isStreaming ? "Остановить стриминг" : "Отправить"}
         >
-          {isStreaming ? ("\u25A0") : (
+          {isStreaming ? (
+            "■"
+          ) : (
             <svg
               className="send-icon"
               viewBox="0 0 24 24"

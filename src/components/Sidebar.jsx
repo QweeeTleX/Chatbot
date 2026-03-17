@@ -10,7 +10,7 @@ export default function Sidebar({
   onTogglePinChat,
   onDeleteChat,
   collapsed,
-  onToggleCollapse,
+  onToggleCollapse
 }) {
   const [editingChatId, setEditingChatId] = useState(null);
   const [editingTitle, setEditingTitle] = useState("");
@@ -18,13 +18,13 @@ export default function Sidebar({
   const getChatTimestamp = (chat) =>
     chat.createdAt ||
     (chat.messages && chat.messages.length ? chat.messages[0]?.timestamp : 0);
-
+  
   const getDayKey = (ts) => {
     const date = new Date(ts);
     date.setHours(0, 0, 0, 0);
     return date.getTime();
   };
-
+  
   const formatDayLabel = (ts) => {
     const date = new Date(ts);
     const today = new Date();
@@ -40,20 +40,31 @@ export default function Sidebar({
     return new Intl.DateTimeFormat("ru-RU", {
       day: "numeric",
       month: "long",
-      ...(withYear ? { year: "numeric" } : {}),
+      ...(withYear ? { year: "numeric" } : {}),     
     }).format(date);
   };
 
   const chatItems = [];
   let lastDayKey = null;
+
   chats.forEach((chat) => {
     const ts = getChatTimestamp(chat);
     const dayKey = getDayKey(ts);
+
     if (dayKey !== lastDayKey) {
-      chatItems.push({ type: "label", key: `label-${dayKey}`, text: formatDayLabel(ts) });
+      chatItems.push({
+        type: "label",
+        key: `label-${dayKey}`,
+        text: formatDayLabel(ts),
+      });
       lastDayKey = dayKey;
     }
-    chatItems.push({ type: "chat", key: chat.id, chat });
+
+    chatItems.push({
+      type: "chat",
+      key: chat.id,
+      chat,
+    });
   });
 
   const saveTitle = (chatId) => {
@@ -67,7 +78,14 @@ export default function Sidebar({
   return (
     <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
       <div className="sidebar-logo">
-        <span className="logo-icon" onClick={() => onSelectChat(null)} title="Перейти на главный экран">☄️</span>
+        <span
+          className="logo-icon"
+          onClick={() => onSelectChat(null)}
+          title="Перейти на главный экран"
+        >
+          ☄️
+        </span>
+
         <span
           className="collapse-toggle"
           onClick={onToggleCollapse}
@@ -84,7 +102,7 @@ export default function Sidebar({
       )}
 
       <div className="sidebar-action" onClick={onCreateChat}>
-        <span className="sidebar-action-icon">＋</span>
+        <span className="sidebar-action-icon">+</span>
         {!collapsed && (
           <span className="sidebar-action-text">Новый чат</span>
         )}
@@ -103,9 +121,9 @@ export default function Sidebar({
 
             const chat = item.chat;
             return (
-              <li
+              <li 
                 key={item.key}
-                className={`chat-item 
+                className={`chat-item
                   ${chat.id === activeChatId ? "active" : ""}
                   ${chat.pinned ? "pinned" : ""}
                 `}
@@ -123,7 +141,7 @@ export default function Sidebar({
                     onBlur={() => saveTitle(chat.id)}
                   />
                 ) : (
-                  <span className="chat-title">{chat.name}</span>
+                  <span className="chat-title">{chat.name}</span>    
                 )}
 
                 <div className="chat-actions">
@@ -156,15 +174,13 @@ export default function Sidebar({
                     }}
                   >
                     🗑️
-                  </span>
+                  </span>  
                 </div>
-              </li>
+              </li>    
             );
-          })}</ul>
+          })}
+        </ul>
       )}
     </div>
   );
 }
-
-
-

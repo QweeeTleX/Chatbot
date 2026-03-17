@@ -6,41 +6,43 @@ import {
 } from "../services/chatMockClient";
 
 export function useChatFlow({
-	chats,
-	activeChatId,
-	createChatWithMessages,
-	renameChat,
-	addMessage,
-	updateMessage,
-	selectedModel,
+  chats,
+  activeChatId,
+  createChatWithMessages,
+  renameChat,
+  addMessage,
+  updateMessage,
+  selectedModel,
 }) {
-	  const [streamState, setStreamState] = useState({
+  const [streamState, setStreamState] = useState({
     status: "idle",
     controller: null,
   });
 
-	const chatsRef = useRef(chats);
+  const chatsRef = useRef(chats);
+
   useEffect(() => {
     chatsRef.current = chats;
   }, [chats]);
 
-	const wait = (ms) => new Promise((res) => setTimeout(res, ms));
+  const wait = (ms) => new Promise((res) => setTimeout(res, ms));
 
-	const isStreaming = streamState.status === "streaming";
+  const isStreaming = streamState.status === "streaming";
 
   const stopStreaming = () => {
     if (streamState.controller) {
       streamState.controller.abort();
     }
-    setStreamState({ status: "idle", controller: null });
+    setStreamState({ status: "idle", controller: null })
   };
 
-	const ensureChatTitle = async (chatId, history, opts = {}) => {
+  const ensureChatTitle = async (chatId, history, opts = {}) => {
     const retries = opts.retries ?? 3;
     const delay = opts.delay ?? 60;
     const timeoutMs = opts.timeoutMs ?? 8000;
 
     let chat = chatsRef.current.find((c) => c.id === chatId);
+
     for (let i = 0; i < retries && !chat; i++) {
       await wait(delay);
       chat = chatsRef.current.find((c) => c.id === chatId);
@@ -85,12 +87,12 @@ export function useChatFlow({
       const prevMessages = existingChat?.messages || [];
       prevCount = prevMessages.length;
       historyForApi = [...prevMessages, userMessage];
-      addMessage(targetChatId, userMessage);
+      addMessage(targetChatId, userMessage);  
     }
 
     if (prevCount === 0) {
       try {
-        await ensureChatTitle(targetChatId, [userMessage], { timeoutMs: 8000 });
+        await ensureChatTitle(targetChatId, [userMessage], { timeoutMs: 8000});
       } catch (err) {
         console.warn("Не удалось сгенерировать название перед ответом", err);
       }
@@ -99,6 +101,7 @@ export function useChatFlow({
 
     const botMessageId = crypto.randomUUID();
     let botContent = "";
+
     addMessage(targetChatId, {
       id: botMessageId,
       sender: "bot",
@@ -112,6 +115,7 @@ export function useChatFlow({
     const hardTimeout = setTimeout(() => {
       if (!controller.signal.aborted) controller.abort("timeout");
     }, 50000);
+
     setStreamState({ status: "streaming", controller });
 
     try {
@@ -124,17 +128,17 @@ export function useChatFlow({
           updateMessage(targetChatId, botMessageId, (prev) => {
             if (typeof event === "string") {
               botContent = `${botContent}${event}`;
-              return { content: `${prev.content || ""}${event}` };
+              return { content:  `${prev.content || ""}${event}`};
             }
 
             if (event?.type === "set") {
               botContent = event.text || "";
-              return { content: event.text || "" };
+              return { content: event.text || ""};
             }
 
             if (event?.type === "append") {
               botContent = `${botContent}${event.text || ""}`;
-              return { content: `${prev.content || ""}${event.text || ""}` };
+              return { content: `${prev.content || ""}${event.text || ""}`};
             }
 
             return prev;
@@ -167,19 +171,17 @@ export function useChatFlow({
         ...historyForApi,
         { sender: "bot", type: "text", content: botContent },
       ];
+
       try {
         await ensureChatTitle(targetChatId, titleHistory, { timeoutMs: 8000 });
       } catch (err) {
         console.warn("Не удалось присвоить название чату", err);
       }
+
       clearTimeout(hardTimeout);
       setStreamState({ status: "idle", controller: null });
     }
   };
 
-	return { isStreaming, stopStreaming, sendMessage };
+  return { isStreaming, stopStreaming, sendMessage };
 }
-
-
-
-
