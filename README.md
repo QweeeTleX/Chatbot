@@ -1,3 +1,7 @@
+![Chatbot screenshot](docs/images/chatbot_scr.png)
+![Chatbot chat](docs/images/chatbot_chat.png)
+![Chatbot settings](docs/images/chatbot_set.png)
+
 # 🤖 Chatbot + ChatMock
 
 Веб-приложение с интерфейсом чата и локальным backend на базе ChatMock.  
