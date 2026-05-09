@@ -444,3 +444,19 @@
 .app.light .theme-toggle:hover {
   background: #2f3640;  
 }
+
+@media (max-width: 720px) {
+  .sidebar:not(.collapsed) {
+    width: 100%;
+    padding: 15px;
+    border-right: none;
+  }
+
+  .sidebar.collapsed {
+    width: 56px;
+  }
+
+  .sidebar:not(.collapsed) ul {
+    max-height: calc(100vh - 145px);
+  }
+}

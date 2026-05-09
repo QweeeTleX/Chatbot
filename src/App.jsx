@@ -149,7 +149,11 @@ function App() {
   });
 
   return (
-    <div className={`app ${theme} ${settingsOpen ? "settings-open" : ""}`}>
+    <div
+      className={`app ${theme} ${settingsOpen ? "settings-open" : ""} ${
+        isSidebarCollapsed ? "sidebar-collapsed" : "sidebar-open"
+      }`}
+    >
       <div className="classic-layout">
         <Sidebar
           chats={sortedChats}
