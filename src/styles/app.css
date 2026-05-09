@@ -126,6 +126,14 @@ body {
   letter-spacing: 0.05em;
 }
 
+.app.dark .control-label {
+  color: #ffffff;
+}
+
+.app.light .control-label {
+  color: #374151;
+}
+
 .control-note {
   font-size: 12px;
   opacity: 0.7;
