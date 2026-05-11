@@ -447,16 +447,30 @@
 
 @media (max-width: 720px) {
   .sidebar:not(.collapsed) {
+    box-sizing: border-box;
     width: 100%;
-    padding: 15px;
+    padding: 15px 20px 15px 15px;
     border-right: none;
   }
 
+  .sidebar:not(.collapsed) .sidebar-logo {
+    padding-right: 24px;
+  }
+
   .sidebar.collapsed {
-    width: 56px;
+    box-sizing: border-box;
+    width: 48px;
+    padding: 6px;
+  }
+
+  .sidebar.collapsed .sidebar-logo,
+  .sidebar.collapsed .sidebar-action {
+    justify-content: center;
+    padding: 8px;
   }
 
   .sidebar:not(.collapsed) ul {
     max-height: calc(100vh - 145px);
+    max-height: calc(100dvh - 145px);
   }
 }

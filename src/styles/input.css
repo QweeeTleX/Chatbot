@@ -196,3 +196,27 @@
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
 }
+
+@media (max-width: 720px) {
+  .input-wrapper {
+    gap: 8px;
+    padding: 8px;
+    margin: 6px 0 8px;
+    border-radius: 14px;
+  }
+
+  .input-row {
+    gap: 6px;
+  }
+
+  .input-row textarea {
+    min-height: 22px;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  .image-preview {
+    width: 72px;
+    height: 72px;
+  }
+}
