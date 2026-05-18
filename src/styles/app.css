@@ -547,6 +547,14 @@ body {
   filter: blur(2px);
 }
 
+.app.light .control-note {
+  color: inherit;
+}
+
+.app.dark .control-note {
+  color: white;
+}
+
 @media (max-width: 860px) {
   .settings-overlay {
     align-items: flex-start;
