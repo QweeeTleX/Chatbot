@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Chat from "./components/Chat";
+import ModelDropdown from "./components/ModelDropdown";
 import EmptyState from "./components/EmptyState";
 import Footer from "./components/Footer";
 import { useChats } from "./hooks/useChats";
@@ -172,17 +173,12 @@ function App() {
             <div className="chat-controls">
               <div className="model-select">
                 <span className="control-label">Модель</span>
-                <select
+                <ModelDropdown
+                  models={models}
                   value={selectedModel}
-                  onChange={(e) => setSelectedModel(e.target.value)}
+                  onChange={setSelectedModel}
                   disabled={modelsLoading}
-                >
-                  {models.map((model) => (
-                    <option key={model} value={model}>
-                      {model}
-                    </option>
-                  ))}
-                </select>
+                />
                 <button
                   className="settings-btn"
                   onClick={() => setSettingsOpen(true)}
